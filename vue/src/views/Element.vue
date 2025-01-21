@@ -18,7 +18,7 @@
 
       <el-col :span="6">
         <div style="padding: 10px; border: 1px solid #ccc; text-align: center">
-          <img style="width: 80%" src="@/assets/logo.png" alt="">
+          <img style="width: 80%" src="@/assets/logo1.png" alt="">
           <div style="text-align: center">这是一段描述</div>
           <div style="color: red">售价 $298</div>
         </div>
@@ -26,7 +26,7 @@
 
       <el-col :span="6">
         <div style="padding: 10px; border: 1px solid #ccc; text-align: center">
-          <img style="width: 80%" src="@/assets/logo.png" alt="">
+          <img style="width: 80%" src="@/assets/logo1.png" alt="">
           <div style="text-align: center">这是一段描述</div>
           <div style="color: red">售价 $99</div>
         </div>
@@ -34,7 +34,7 @@
 
       <el-col :span="6">
         <div style="padding: 10px; border: 1px solid #ccc; text-align: center">
-          <img style="width: 80%" src="@/assets/logo.png" alt="">
+          <img style="width: 80%" src="@/assets/logo1.png" alt="">
           <div style="text-align: center">这是一段描述</div>
           <div style="color: red">售价 $198</div>
         </div>
@@ -42,7 +42,7 @@
 
       <el-col :span="6">
         <div style="padding: 10px; border: 1px solid #ccc; text-align: center">
-          <img style="width: 80%" src="@/assets/logo.png" alt="">
+          <img style="width: 80%" src="@/assets/logo1.png" alt="">
           <div style="text-align: center">这是一段描述</div>
           <div style="color: red">售价 $68</div>
         </div>
@@ -106,10 +106,55 @@
     </el-row>
 
 
+<!--    下拉框功能-->
+<!--    @是v-on的简写，绑定事件,当下拉框的值change时，会触发changeSelect方法-->
+<!--    v-for循环中绑定的key是数组中的唯一标识符-->
+    <el-row>
+      <el-select v-model="select1" @:change="changeSelectFruit">
+        <el-option v-for="item in fruits" :key="item.id" :value="item.name"></el-option>
+      </el-select>
+    </el-row>
+
+
+    <el-row>
+      <el-select v-model="select2" @:change="changeSelectUser">
+        <el-option v-for="item in users" :key="item.card" :label="item.name" :value="item.card"></el-option>
+      </el-select>
+    </el-row>
+
+
+<!--    el-radio-group是一组单选框-->
+    <el-row>
+      <el-radio-group v-model="radio" @change="selectRadio">
+        <el-radio label="男"></el-radio>
+        <el-radio label="女"></el-radio>
+      </el-radio-group>
+    </el-row>
+
+
+<!--    el-date-picker是日期选择器，type="date"是日期选择器，type="datetime"是时间选择器，一定要设置value-format-->
+    <el-date-picker v-model="date" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" @change="changeDate"></el-date-picker>
+    <el-date-picker v-model="datetime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss" @change="changeDateTime"></el-date-picker>
+
+
+<!--    el-table是表格，数组有几个属性就有几个el-table-column,prop是数组中的属性-->
+<!--    通过:header-cell-style来设置表头的样式-->
+    <el-row style="margin: 20px 0">
+      <el-table :data="tableData" border :header-cell-style="{ background: 'aliceblue', fontSize:'16px'}">
+        <el-table-column label="序号" prop="id" align="center"></el-table-column>
+        <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+        <el-table-column label="年龄" prop="age" align="center"></el-table-column>
+        <el-table-column label="地址" prop="address" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template v-slot="scope">
+            <el-button size="primary" @click="edit(scope.row)">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-row>
 
   </div>
 </template>
-
 
 
 
@@ -123,14 +168,70 @@ export default {
       value4: '',
       value5: '',
       password: '',
-      coffees: [{value: '1星巴克咖啡'},{value: '2瑞幸咖啡'},{value: '3库迪咖啡'}] //想要实现搜索建议，数组必须带value
+      coffees: [//想要实现搜索建议，数组必须带value
+        {value: '1星巴克咖啡'},
+        {value: '2瑞幸咖啡'},
+        {value: '3库迪咖啡'}
+      ],
+      select1: '',
+      select2: '',
+      fruits: [
+        {name: '香蕉', id: 1},
+        {name: '橘子', id: 2},
+        {name: '菠萝', id: 3}
+      ],
+      users: [
+        {name: '张三', card: '12312342312342123'},
+        {name: '李四', card: '23232312232312312'},
+        {name: '王五', card: '78761231232122313'},
+      ],
+      radio: '',
+      date: '',
+      datetime: '',
+      tableData: [
+        {id:'1',name:'张三',age:'17',address:'DX1560'},
+        {id:'2',name:'李四',age:'18',address:'DN2100'},
+        {id:'3',name:'王五',age:'19',address:'CE1230'},
+      ],
     }
   },
   methods: {
-    querySearch(queryString, cb) {//cb(call back)是一个回调函数，用来返回匹配的结果
+    querySearch(queryString, cb) { //cb(call back)是一个回调函数，用来返回匹配的结果
       let result = queryString ? this.coffees.filter(coffee => coffee.value.includes(queryString)) : this.coffees
       cb(result)
-    }
+    },
+    changeSelectFruit(){
+      console.log(this.select1)
+    },
+    changeSelectUser(){
+      console.log(this.select2)
+    },
+    selectRadio(){
+      console.log(this.radio)
+    },
+    changeDate(){
+      console.log(this.date)
+    },
+    changeDateTime(){
+      console.log(this.datetime)
+    },
+    edit(row){
+      //有四种消息提示方式可选
+      //第一种
+      //alert(row.name)
+      //第二种
+      //this.$message.success(row.name)
+      //第三种
+      //this.$notify.success(row.name)
+      //第四种
+      this.$confirm('这是一段文本','提示',{
+          type: 'warning'
+      }).then(() => {
+        this.$message.success('确定的消息')
+      }).catch(() => {
+        this.$message.warning('取消的消息')
+      })
+    },
   }
 }
 </script>
