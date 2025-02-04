@@ -16,6 +16,7 @@ import java.util.List;
  * 作者：王柄皓
  * 日期：2025/1/24 16:31
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {

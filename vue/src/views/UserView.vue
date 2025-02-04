@@ -70,22 +70,38 @@
           <div style="box-shadow: 0 0 10px rgba(0,0,0,.1); padding: 10px 20px; border-radius: 5px; margin-bottom: 10px">
             你好 少年！ 欢迎使用 游戏分享网站！
           </div>
-          <el-card style="width: 500px">
-            <div slot="header" class="clearfix">
-              <span>国产游戏《黑神话：悟空》走向世界！</span>
-            </div>
-            <div>
-              以《黑神话：悟空》为代表的国产3A游戏，通过对中国传统文化的创新演绎和高质量的呈现，不仅在全球范围内获得广泛认可，还成功将中国文化带入国际视野。
-              <div style="margin-top: 20px">
-                <div style="margin: 10px 0"><strong>主题色</strong></div>
-                <el-button type="primary">按钮</el-button>
-                <el-button type="success">按钮</el-button>
-                <el-button type="warning">按钮</el-button>
-                <el-button type="danger">按钮</el-button>
-                <el-button type="info">按钮</el-button>
+          <div style="display: flex">
+            <el-card style="width: 50%; margin-right: 10px">
+              <div slot="header" class="clearfix">
+                <span>国产游戏《黑神话：悟空》走向世界！</span>
               </div>
-            </div>
-          </el-card>
+              <div>
+                以《黑神话：悟空》为代表的国产3A游戏，通过对中国传统文化的创新演绎和高质量的呈现，不仅在全球范围内获得广泛认可，还成功将中国文化带入国际视野。
+                <div style="margin-top: 20px">
+                  <div style="margin: 10px 0"><strong>主题色</strong></div>
+                  <el-button type="primary">按钮</el-button>
+                  <el-button type="success">按钮</el-button>
+                  <el-button type="warning">按钮</el-button>
+                  <el-button type="danger">按钮</el-button>
+                  <el-button type="info">按钮</el-button>
+                </div>
+              </div>
+            </el-card>
+
+            <el-card style="width: 50%">
+              <div slot="header" class="clearfix">
+                <span>渲染用户的数据</span>
+              </div>
+              <div>
+                <el-table :data="users">
+                  <el-table-column label="id" prop="id"></el-table-column>
+                  <el-table-column label="用户名" prop="username"></el-table-column>
+                  <el-table-column label="姓名" prop="name"></el-table-column>
+                  <el-table-column label="地址" prop="address"></el-table-column>
+                </el-table>
+              </div>
+            </el-card>
+          </div>
         </el-main>
 
       </el-container>
@@ -97,14 +113,22 @@
 
 <script>
 
+import request from '@/utils/request'
+
 export default {
   name: 'UserView',
   data() {
     return {
       isCollapse: false,  // 不收缩
       asideWidth: '200px',
-      collapseIcon: 'el-icon-s-fold'
+      collapseIcon: 'el-icon-s-fold',
+      users: []
     }
+  },
+  mounted() { // 页面加载完成之后触发
+    request.get('/user/selectAll').then(res => {
+      this.users = res.data
+    })
   },
   methods: {
     handleFull() {
