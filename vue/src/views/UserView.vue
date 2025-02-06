@@ -58,7 +58,7 @@
               </div>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click="">退出到前台</el-dropdown-item>
-                <el-dropdown-item @click="">退出登录</el-dropdown-item>
+                <el-dropdown-item @click.native="$router.push('/login')">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>

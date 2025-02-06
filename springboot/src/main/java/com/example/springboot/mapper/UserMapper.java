@@ -19,16 +19,16 @@ public interface UserMapper {
     @Delete("delete from `user` where id = #{id}")
     void deleteUser(Integer id);
 
-    @Select("select * from `User` order by id desc")
+    @Select("select * from `user` order by id desc")
     List<User> selectAll();
 
-    @Select("select * from `User` where id = #{id}")
+    @Select("select * from `user` where id = #{id}")
     User selectById(Integer id);
 
-    @Select("select * from `User` where name = #{name}")
+    @Select("select * from `user` where name = #{name}")
     List<User> selectByName(String name);
 
-    @Select("select * from `User` where username = #{username} and name = #{name}")
+    @Select("select * from `user` where username = #{username} and name = #{name}")
     List<User> selectByMore(@Param("username") String username, @Param("name") String name);
 
     @Select("select * from `user` where username like concat('%', #{username}, '%') and name like concat('%', #{name}, '%') order by id desc")
@@ -39,4 +39,7 @@ public interface UserMapper {
 
     @Select("select count(id) from `user` where username like concat('%', #{username}, '%') and name like concat('%', #{name}, '%') order by id desc")
     int selectCountByPage(@Param("username") String username, @Param("name") String name);
+
+    @Select("select * from `user` where username = #{username}")
+    User selectByUsername(String username);
 }
