@@ -38,7 +38,7 @@ public class WebController {
     @AuthAccess
     @PostMapping("/register")
     public Result register(@RequestBody User user){
-        if(StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())){ //国产hutool插件
+        if(StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword()) || StrUtil.isBlank(user.getRole())){ //国产hutool插件
             return Result.error("数据输入不合法");
         }
         if(user.getUsername().length()>10 || user.getPassword().length()>20){

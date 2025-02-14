@@ -8,12 +8,13 @@
           <span class="logo-title" v-show="!isCollapse">管理员后台系统</span>
         </div>
 
-        <el-menu :collapse="isCollapse" :collapse-transition="false" router background-color="#001529" text-color="rgba(255, 255, 255, 0.65)" active-text-color="#fff" style="border: none" :default-active="$route.path">
-          <el-menu-item index="/admin">
-            <i class="el-icon-house"></i>
+        <el-menu :collapse="isCollapse" :collapse-transition="false" router background-color="#001529" text-color="rgba(255, 255, 255, 0.65)"
+                 active-text-color="#fff" style="border: none" :default-active="$route.path">
+          <el-menu-item index="/home">
+            <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-submenu index="1">
+          <el-submenu index="info">
             <template slot="title">
               <i class="el-icon-user"></i>
               <span>个人中心</span>
@@ -21,35 +22,42 @@
             <el-menu-item>修改密码</el-menu-item>
             <el-menu-item>个人信息</el-menu-item>
           </el-submenu>
-          <el-submenu index="2">
+          <el-submenu index="user" v-if="user.role==='管理员'">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item>用户</el-menu-item>
+            <el-menu-item index="/user">用户信息</el-menu-item>
           </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>游戏类型管理</span>
-            </template>
-            <el-menu-item>游戏类型</el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
+          <el-submenu index="article">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>游戏文章管理</span>
             </template>
             <el-menu-item>游戏文章</el-menu-item>
           </el-submenu>
-          <el-submenu index="5">
+          <el-submenu index="star" v-if="user.role==='用户'">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>我的收藏管理</span>
+            </template>
+            <el-menu-item>我的收藏</el-menu-item>
+          </el-submenu>
+          <el-submenu index="type" v-if="user.role==='管理员'">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>游戏类型管理</span>
+            </template>
+            <el-menu-item>游戏类型</el-menu-item>
+          </el-submenu>
+          <el-submenu index="forum" v-if="user.role==='管理员'">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>交流论坛</span>
             </template>
             <el-menu-item>交流论坛</el-menu-item>
           </el-submenu>
-          <el-submenu index="6">
+          <el-submenu index="system" v-if="user.role==='管理员'">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>系统管理</span>
@@ -76,7 +84,7 @@
             <el-dropdown placement="bottom">
               <div style="display: flex; align-items: center; cursor: default">
                 <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px; margin: 0 5px">
-                <span>管理员</span>
+                <span>{{ user.name }}</span>
               </div>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
@@ -88,90 +96,7 @@
 
         <!--        主体区域-->
         <el-main>
-          <div style="box-shadow: 0 0 10px rgba(0,0,0,.1); padding: 10px 20px; border-radius: 5px; margin-bottom: 10px">
-            你好 欢迎使用 游戏分享网站！
-          </div>
-          <div style="display: flex">
-            <el-card style="width: 30%; margin-right: 10px">
-              <div slot="header" class="clearfix">
-                <span>国产游戏《黑神话：悟空》走向世界！</span>
-              </div>
-              <div>
-                以《黑神话：悟空》为代表的国产3A游戏，通过对中国传统文化的创新演绎和高质量的呈现，不仅在全球范围内获得广泛认可，还成功将中国文化带入国际视野。
-                <div style="margin-top: 20px">
-                  <div style="margin: 10px 0"><strong>主题色</strong></div>
-                  <el-button type="primary">按钮</el-button>
-                  <el-button type="success">按钮</el-button>
-                  <el-button type="warning">按钮</el-button>
-                  <el-button type="danger">按钮</el-button>
-                  <el-button type="info">按钮</el-button>
-                </div>
-              </div>
-            </el-card>
-
-            <el-card style="width: 70%">
-              <div slot="header" class="clearfix">
-                <span>渲染用户的数据</span>
-              </div>
-              <div>
-                <el-table :data="users">
-                  <el-table-column label="id" prop="id"></el-table-column>
-                  <el-table-column label="用户名" prop="username"></el-table-column>
-                  <el-table-column label="姓名" prop="name"></el-table-column>
-                  <el-table-column label="地址" prop="address"></el-table-column>
-                  <el-table-column label="文件上传">
-                    <template v-slot="scope">
-                      <el-upload
-                          action="http://localhost:9999/file/upload"
-                          :headers="{token: user.token}"
-                          :show-file-list="false"
-                          :on-success="(row,file,fileList)=>handleTableFileUpload(scope.row,file,fileList)"
-                      >
-                        <el-button size="mini" type="primary">点击上传</el-button>
-                      </el-upload>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="头像">
-                    <template v-slot="scope">
-                      <el-image v-if="scope.row.avatar" :src="scope.row.avatar" style="width: 50px;height: 50px"></el-image>
-                      <div><el-button @click="preview(scope.row.avatar)">预览</el-button></div>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-            </el-card>
-          </div>
-
-          <div style="display: flex; margin: 10px 0">
-            <el-card style="width: 50%; margin-right: 10px">
-              <div slot="header" class="clearfix">
-                <span>文件上传下载</span>
-              </div>
-              <div>
-                <el-upload
-                    action="http://localhost:9999/file/upload"
-                    :headers="{token: user.token}"
-                    list-type="picture"
-                    :on-success="handleFileUpload"
-                >
-                  <el-button size="mini" type="primary">单文件上传</el-button>
-                </el-upload>
-              </div>
-              <div style="margin: 10px 0">
-                <el-upload
-                    action="http://localhost:9999/file/upload"
-                    :headers="{token: user.token}"
-                    :on-success="handleMultipleFileUpload"
-                    multiple
-                >
-                  <el-button size="mini" type="success">多文件上传</el-button>
-                </el-upload>
-                <el-button type="primary" size="mini" style="margin:10px 0" @click="showUrls">显示上传的链接</el-button>
-
-              </div>
-            </el-card>
-          </div>
-
+          <router-view />
         </el-main>
 
       </el-container>
@@ -185,7 +110,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: 'AdminView',
+  name: 'Manager',
   data() {
     return {
       isCollapse: false,  // 不收缩
