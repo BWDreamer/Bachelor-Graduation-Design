@@ -48,4 +48,17 @@ public class WebController {
         return Result.success(user);
     }
 
+    /**
+     *  Controller重置密码
+     */
+    @AuthAccess
+    @PutMapping("/password")
+    public Result password(@RequestBody User user) {
+        if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPhone())) {
+            return Result.error("数据输入不合法");
+        }
+        userService.resetPassword(user);
+        return Result.success();
+    }
+
 }

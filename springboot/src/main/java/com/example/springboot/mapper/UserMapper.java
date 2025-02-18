@@ -14,7 +14,7 @@ public interface UserMapper {
 
     @Update("update `user` set username = #{username}, password = #{password}, name= #{name}, phone = #{phone}, " +
             "email = #{email}, address = #{address}, avatar = #{avatar} where id = #{id}")
-    void update(User user);
+    void updateUser(User user);
 
     @Delete("delete from `user` where id = #{id}")
     void deleteUser(Integer id);
