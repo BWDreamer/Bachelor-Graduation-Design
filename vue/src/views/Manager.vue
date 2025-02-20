@@ -48,7 +48,7 @@
               <i class="el-icon-menu"></i>
               <span>游戏类型管理</span>
             </template>
-            <el-menu-item index="4">游戏类型</el-menu-item>
+            <el-menu-item index="/category">游戏类型</el-menu-item>
           </el-submenu>
           <el-submenu index="forum" v-if="user.role==='管理员'">
             <template slot="title">

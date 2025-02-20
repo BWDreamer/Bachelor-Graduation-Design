@@ -1,5 +1,9 @@
 package com.example.springboot.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -8,8 +12,12 @@ import lombok.Data;
  * 日期：2025/1/24 16:16
  */
 @Data //该注解是lombok插件里的，会自动生成get方法和set方法
+@TableName("user")
 public class User {
+
+    @TableId(type= IdType.AUTO)
     private int id;
+
     private String username;
     private String password;
     private String name;
@@ -18,5 +26,7 @@ public class User {
     private String address;
     private String avatar;
     private String role;
+
+    @TableField(exist = false)
     private String token;
 }
