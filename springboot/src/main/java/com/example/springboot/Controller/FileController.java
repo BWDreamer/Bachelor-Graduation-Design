@@ -1,6 +1,9 @@
 package com.example.springboot.Controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Dict;
+import cn.hutool.core.thread.ThreadUtil;
 import com.example.springboot.common.AuthAccess;
 import com.example.springboot.common.Result;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +22,6 @@ import java.net.URLEncoder;
  * 日期：2025/2/11 11:46
  */
 @RestController
-@RequestMapping("/file")
 public class FileController {
 
     @Value("${ip:localhost}")
@@ -30,7 +32,7 @@ public class FileController {
 
     private static final String ROOT_PATH = System.getProperty("user.dir") + File.separator + "files";  // G:\CQPUT2025-Graduation\files
 
-    @PostMapping("/upload")
+    @PostMapping("/files/upload")
     public Result upload(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件名+后缀名
         String mainName = FileUtil.mainName(originalFilename);  // 文件名
@@ -48,7 +50,7 @@ public class FileController {
     }
 
     @AuthAccess
-    @GetMapping("/download/{fileName}")
+    @GetMapping("/file/download/{fileName}")
     public void download(@PathVariable String fileName, HttpServletResponse response) throws IOException {
         response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8")); // 预览
         String filePath = ROOT_PATH  + File.separator + fileName;
@@ -61,4 +63,32 @@ public class FileController {
         outputStream.flush();
         outputStream.close();
     }
+
+    /**
+     *  富文本文件上传
+     */
+    @PostMapping("/editor/upload")
+    public Dict editorUpload(MultipartFile file) {
+        String flag;
+        synchronized (FileController.class) {
+            flag = System.currentTimeMillis() + "";
+            ThreadUtil.sleep(1L);
+        }
+        String originalFilename = file.getOriginalFilename();
+        try {
+            if (!FileUtil.exist(ROOT_PATH)) {
+                FileUtil.mkdir(ROOT_PATH);
+            }
+            String newFileName = flag + "-" + originalFilename;
+            FileUtil.writeBytes(file.getBytes(), ROOT_PATH + File.separator + newFileName);
+
+            String url = "http://" + ip + ":" + port + "/file/download/" + newFileName;
+            return Dict.create().set("errno", 0).set("data", CollUtil.newArrayList(Dict.create().set("url", url)));
+        } catch (Exception e) {
+            System.err.println(originalFilename + "--文件上传失败");
+            return Dict.create().set("errno", 500);
+        }
+    }
+
+
 }

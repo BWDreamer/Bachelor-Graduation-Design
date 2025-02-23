@@ -13,8 +13,9 @@ Vue.config.productionTip = false
 Vue.use(ElementUI,{size:'small'});
 
 Vue.prototype.$request=request
+Vue.prototype.$baseUrl = 'http://localhost:9999'
 
 new Vue({
   router,
   render: h => h(App)
-}).$mount('#app') //挂载到id为app的元素上
+}).$mount('#app')
