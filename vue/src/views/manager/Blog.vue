@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="search">
-      <el-input placeholder="请输入游戏名称查询" style="width: 200px" v-model="title"></el-input>
+      <el-input placeholder="请输入游戏名称查询" style="width: 200px; margin-right: 10px" v-model="title"></el-input>
+      <el-input placeholder="请输入分类查询" style="width: 200px; margin-right: 10px" v-model="categoryName"></el-input>
+      <el-input placeholder="请输入用户名称查询" style="width: 200px" v-model="userName"></el-input>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
@@ -114,9 +116,15 @@
 <script>
 import E from "wangeditor"
 import hljs from 'highlight.js'
+import category from "@/views/manager/Category.vue";
 
 export default {
   name: "Blog",
+  computed: {
+    category() {
+      return category
+    }
+  },
   data() {
     return {
       tableData: [],  // 所有的数据
@@ -124,6 +132,8 @@ export default {
       pageSize: 10,  // 每页显示的个数
       total: 0,
       title: null,
+      categoryName: null,
+      userName: null,
       fromVisible: false,
       form: {},
       user: JSON.parse(localStorage.getItem('web-user') || '{}'),
@@ -140,11 +150,13 @@ export default {
   methods: {
     handleAdd() {   // 新增数据
       this.form = {}  // 新增数据的时候清空数据
+      this.tagsArr = []
       this.setRichText()
       this.fromVisible = true   // 打开弹窗
     },
     handleEdit(row) {   // 编辑数据
       this.form = JSON.parse(JSON.stringify(row))  // 给form对象赋值  注意要深拷贝数据
+      this.tagsArr = JSON.parse(this.form.tags || '[]')
       this.fromVisible = true   // 打开弹窗
       this.setRichText()
       setTimeout(()=>{
@@ -155,6 +167,7 @@ export default {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
           this.form.tags = JSON.stringify(this.tagsArr)  //把json数组转成json字符串存储到数据库
+          this.form.content=this.editor.txt.html()
           this.$request({
             url: this.form.id ? '/blog/update' : '/blog/add',
             method: this.form.id ? 'PUT' : 'POST',
@@ -211,6 +224,8 @@ export default {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           title: this.title,
+          categoryName: this.categoryName,
+          userName: this.userName,
         }
       }).then(res => {
         this.tableData = res.data?.list
@@ -222,6 +237,8 @@ export default {
     },
     reset() {
       this.title = null
+      this.categoryName = null
+      this.userName = null
       this.load(1)
     },
     handleCurrentChange(pageNum) {

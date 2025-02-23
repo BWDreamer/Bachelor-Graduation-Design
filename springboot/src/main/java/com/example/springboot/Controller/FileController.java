@@ -67,7 +67,7 @@ public class FileController {
     /**
      *  富文本文件上传
      */
-    @PostMapping("/editor/upload")
+    @PostMapping("/files/editor/upload")
     public Dict editorUpload(MultipartFile file) {
         String flag;
         synchronized (FileController.class) {

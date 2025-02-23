@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 博客信息业务处理
+ * 游戏文章信息业务处理
  **/
 @Service
 public class BlogService {
