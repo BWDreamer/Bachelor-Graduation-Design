@@ -7,3 +7,7 @@ body{
     margin: 0;
     padding: 0;
 }
+
+.w-e-text img{
+    width: 100% !important;
+}

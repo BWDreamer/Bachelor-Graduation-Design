@@ -23,6 +23,7 @@ const routes = [
       {path:'password',name:'Password', meta: {name: '修改密码' }, component:()=>import('../views/manager/Password.vue')},
       {path:'category',name:'Category', meta: {name: '游戏类型' }, component:()=>import('../views/manager/Category.vue')},
       {path:'blog',name:'Blog', meta: {name: '游戏文章' }, component:()=>import('../views/manager/Blog.vue')},
+      {path:'activity',name:'Activity', meta: {name: '游戏活动' }, component:()=>import('../views/manager/Activity.vue')},
     ]
   },
   {path: '/login', name: 'Login', meta: {name: '登录' }, component: () => import('../views/Login.vue')},

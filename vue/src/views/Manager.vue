@@ -29,6 +29,13 @@
             </template>
             <el-menu-item index="/user">用户信息</el-menu-item>
           </el-submenu>
+          <el-submenu index="type" v-if="user.role==='管理员'">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>游戏类型管理</span>
+            </template>
+            <el-menu-item index="/category">游戏类型</el-menu-item>
+          </el-submenu>
           <el-submenu index="article">
             <template slot="title">
               <i class="el-icon-menu"></i>
@@ -36,19 +43,19 @@
             </template>
             <el-menu-item index="/blog">游戏文章</el-menu-item>
           </el-submenu>
+          <el-submenu index="news" v-if="user.role==='管理员'">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>游戏资讯管理</span>
+            </template>
+            <el-menu-item index="/activity">游戏活动</el-menu-item>
+          </el-submenu>
           <el-submenu index="star" v-if="user.role==='用户'">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>我的收藏管理</span>
             </template>
             <el-menu-item index="3">我的收藏</el-menu-item>
-          </el-submenu>
-          <el-submenu index="type" v-if="user.role==='管理员'">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>游戏类型管理</span>
-            </template>
-            <el-menu-item index="/category">游戏类型</el-menu-item>
           </el-submenu>
           <el-submenu index="forum" v-if="user.role==='管理员'">
             <template slot="title">
@@ -63,7 +70,6 @@
               <span>系统管理</span>
             </template>
             <el-menu-item index="6">轮播图管理</el-menu-item>
-            <el-menu-item index="7">游戏资讯</el-menu-item>
           </el-submenu>
         </el-menu>
 
