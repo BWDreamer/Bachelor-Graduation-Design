@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 游戏文章信息业务处理
@@ -77,6 +78,17 @@ public class BlogService {
         PageHelper.startPage(pageNum, pageSize);
         List<Blog> list = blogMapper.selectAll(blog);
         return PageInfo.of(list);
+    }
+
+    /**
+     * 游戏文章榜单
+     */
+    public List<Blog> selectTop() {
+        List<Blog> blogList = this.selectAll(null);
+        blogList = blogList.stream().sorted((b1, b2) -> b2.getReadCount().compareTo(b1.getReadCount()))
+                .limit(20)
+                .collect(Collectors.toList());
+        return blogList;
     }
 
 }

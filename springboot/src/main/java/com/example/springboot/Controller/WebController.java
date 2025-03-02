@@ -49,7 +49,7 @@ public class WebController {
     }
 
     /**
-     *  Controller重置密码
+     *  后台重置密码
      */
     @AuthAccess
     @PutMapping("/password")
@@ -60,5 +60,6 @@ public class WebController {
         userService.resetPassword(user);
         return Result.success();
     }
+
 
 }

@@ -1,8 +1,8 @@
 package com.example.springboot.Controller;
 
 import com.example.springboot.common.Result;
-import com.example.springboot.entity.Blog;
-import com.example.springboot.service.BlogService;
+import com.example.springboot.entity.Notice;
+import com.example.springboot.service.NoticeService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,21 +10,21 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 博客信息前端操作接口
+ * 公告信息表前端操作接口
  **/
 @RestController
-@RequestMapping("/blog")
-public class BlogController {
+@RequestMapping("/notice")
+public class NoticeController {
 
     @Resource
-    private BlogService blogService;
+    private NoticeService noticeService;
 
     /**
      * 新增
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Blog blog) {
-        blogService.add(blog);
+    public Result add(@RequestBody Notice notice) {
+        noticeService.add(notice);
         return Result.success();
     }
 
@@ -33,7 +33,7 @@ public class BlogController {
      */
     @DeleteMapping("/delete/{id}")
     public Result deleteById(@PathVariable Integer id) {
-        blogService.deleteById(id);
+        noticeService.deleteById(id);
         return Result.success();
     }
 
@@ -42,7 +42,7 @@ public class BlogController {
      */
     @DeleteMapping("/delete/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
-        blogService.deleteBatch(ids);
+        noticeService.deleteBatch(ids);
         return Result.success();
     }
 
@@ -50,8 +50,8 @@ public class BlogController {
      * 修改
      */
     @PutMapping("/update")
-    public Result updateById(@RequestBody Blog blog) {
-        blogService.updateById(blog);
+    public Result updateById(@RequestBody Notice notice) {
+        noticeService.updateById(notice);
         return Result.success();
     }
 
@@ -60,38 +60,28 @@ public class BlogController {
      */
     @GetMapping("/selectById/{id}")
     public Result selectById(@PathVariable Integer id) {
-        Blog blog = blogService.selectById(id);
-        return Result.success(blog);
+        Notice notice = noticeService.selectById(id);
+        return Result.success(notice);
     }
 
     /**
      * 查询所有
      */
     @GetMapping("/selectAll")
-    public Result selectAll(Blog blog) {
-        List<Blog> list = blogService.selectAll(blog);
+    public Result selectAll(Notice notice ) {
+        List<Notice> list = noticeService.selectAll(notice);
         return Result.success(list);
     }
-
 
     /**
      * 分页查询
      */
     @GetMapping("/selectPage")
-    public Result selectPage(Blog blog,
+    public Result selectPage(Notice notice,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {
-        PageInfo<Blog> page = blogService.selectPage(blog, pageNum, pageSize);
+        PageInfo<Notice> page = noticeService.selectPage(notice, pageNum, pageSize);
         return Result.success(page);
-    }
-
-    /**
-     * 游戏文章榜单
-     */
-    @GetMapping("/selectTop")
-    public Result selectTop() {
-        List<Blog> list = blogService.selectTop();
-        return Result.success(list);
     }
 
 }

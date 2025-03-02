@@ -1,16 +1,24 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 4816150 */
-  src: url('iconfont.woff2?t=1737445241766') format('woff2'),
-       url('iconfont.woff?t=1737445241766') format('woff'),
-       url('iconfont.ttf?t=1737445241766') format('truetype');
+  font-family: "element-icons"; /* Project id 4816150 */
+  src: url('iconfont.woff2?t=1740917081413') format('woff2'),
+       url('iconfont.woff?t=1740917081413') format('woff'),
+       url('iconfont.ttf?t=1740917081413') format('truetype');
 }
 
-.iconfont {
-  font-family: "iconfont" !important;
+.element-icons {
+  font-family: "element-icons" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.el-icon-like:before {
+  content: "\ec7f";
+}
+
+.el-icon-eye:before {
+  content: "\ec86";
 }
 
 .el-icon-quanping:before {

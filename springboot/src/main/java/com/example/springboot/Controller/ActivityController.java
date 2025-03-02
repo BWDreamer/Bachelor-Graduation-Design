@@ -84,4 +84,13 @@ public class ActivityController {
         return Result.success(page);
     }
 
+    /**
+     * 热门游戏资讯榜单
+     */
+    @GetMapping("/selectTop")
+    public Result selectTop() {
+        List<Activity> list = activityService.selectTop();
+        return Result.success(list);
+    }
+
 }
