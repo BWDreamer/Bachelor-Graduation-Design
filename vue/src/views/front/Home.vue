@@ -12,7 +12,7 @@
         <div class="card" style="min-height: 80vh">
           <div class="blog-box" v-for="item in tableData" :key="item.id" v-if="total > 0">
             <div style="flex: 1; width: 0">
-              <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px">{{ item.title }}</div>
+              <a :href="'/front/blogDetail?blogId=' + item.id" target="_blank"><div class="blog-title">{{ item.title }}</div></a>
               <div class="line1" style="color: #666; margin-bottom: 10px; font-size: 13px">{{ item.descr }}</div>
               <div style="display: flex">
                 <div style="flex: 1; font-size: 13px">
@@ -21,8 +21,7 @@
                   <span style="color: #666"><i class="el-icon-like"></i> {{ item.likesCount }}</span>
                 </div>
                 <div style="width: fit-content">
-                  <el-tag type="primary" style="margin-right: 10px">动作</el-tag>
-                  <el-tag type="primary">冒险</el-tag>
+                  <el-tag v-for="item in JSON.parse(item.tags || '[]')" :key="item" type="primary" style="margin-right:5px">{{ item }}</el-tag>
                 </div>
               </div>
             </div>
@@ -138,7 +137,7 @@ export default {
         this.topList.forEach(item => item.index = i++)
 
         // 0  5  0
-        if (this.lastIndex === 20) {
+        if (this.lastIndex === 10) {
           this.lastIndex = 0
         }
         this.showList = this.topList.slice(this.lastIndex, this.lastIndex+5)  // 0-5   5- 10   0-5
@@ -188,11 +187,6 @@ export default {
   color: #fff;
   border-radius: 5px;
 }
-.line1 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 .blog-box {
   display: flex;
   grid-gap: 15px;
@@ -201,5 +195,14 @@ export default {
 }
 .blog-box:first-child {
   padding-top: 0;
+}
+.blog-title{
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.blog-title:hover {
+  color: #2a60c9;
 }
 </style>

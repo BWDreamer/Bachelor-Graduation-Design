@@ -43,6 +43,10 @@ public class UserService extends ServiceImpl<UserMapper,User> {
         return getOne(queryWrapper);   // select * from user where username=#{username}
     }
 
+    public User selectById(Integer id) {
+        return userMapper.selectById(id);
+    }
+
     //验证用户账号是否合法
     public User login(User user) {
         User dbUser = selectByUsername(user.getUsername());

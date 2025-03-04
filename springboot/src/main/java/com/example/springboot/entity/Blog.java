@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.util.Objects;
+
 /**
  * 游戏文章信息
  */
@@ -36,4 +38,25 @@ public class Blog {
 
     private String userName;
 
+    private User user;
+
+    private Integer likesCount;
+
+    private Boolean userLike; //返回当前浏览的数据是否被当前登陆的用户点赞
+
+    private Integer collectCount;
+
+    private Boolean userCollect; //返回当前浏览的数据是否被当前登陆的用户收藏
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Blog blog = (Blog) o;
+        return Objects.equals(id, blog.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

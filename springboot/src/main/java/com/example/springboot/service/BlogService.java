@@ -1,7 +1,13 @@
 package com.example.springboot.service;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
+import com.example.springboot.common.LikesModuleEnum;
 import com.example.springboot.entity.Blog;
+import com.example.springboot.entity.Collect;
+import com.example.springboot.entity.Likes;
 import com.example.springboot.entity.User;
 import com.example.springboot.mapper.BlogMapper;
 import com.example.springboot.utils.TokenUtils;
@@ -10,7 +16,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -21,6 +29,15 @@ public class BlogService {
 
     @Resource
     private BlogMapper blogMapper;
+
+    @Resource
+    UserService userService;
+
+    @Resource
+    LikesService likesService;
+
+    @Resource
+    CollectService collectService;
 
     /**
      * 新增
@@ -61,7 +78,21 @@ public class BlogService {
      * 根据ID查询
      */
     public Blog selectById(Integer id) {
-        return blogMapper.selectById(id);
+        Blog blog = blogMapper.selectById(id);
+        User user = userService.selectById(blog.getUserId());
+        blog.setUser(user); //设置作者信息
+        // 查询当前博客的点赞数据
+        int likesCount = likesService.selectByFidAndModule(id, LikesModuleEnum.BLOG.getValue());
+        blog.setLikesCount(likesCount);
+        Likes userLikes = likesService.selectUserLikes(id, LikesModuleEnum.BLOG.getValue());
+        blog.setUserLike(userLikes != null);
+
+        // 查询当前博客的收藏数据
+        int collectCount = collectService.selectByFidAndModule(id, LikesModuleEnum.BLOG.getValue());
+        blog.setCollectCount(collectCount);
+        Collect userCollect = collectService.selectUserCollect(id, LikesModuleEnum.BLOG.getValue());
+        blog.setUserCollect(userCollect != null);
+        return blog;
     }
 
     /**
@@ -77,6 +108,10 @@ public class BlogService {
     public PageInfo<Blog> selectPage(Blog blog, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Blog> list = blogMapper.selectAll(blog);
+        for (Blog b : list) {
+            int likesCount = likesService.selectByFidAndModule(b.getId(), LikesModuleEnum.BLOG.getValue());
+            b.setLikesCount(likesCount);
+        }
         return PageInfo.of(list);
     }
 
@@ -86,9 +121,33 @@ public class BlogService {
     public List<Blog> selectTop() {
         List<Blog> blogList = this.selectAll(null);
         blogList = blogList.stream().sorted((b1, b2) -> b2.getReadCount().compareTo(b1.getReadCount()))
-                .limit(20)
+                .limit(10)
                 .collect(Collectors.toList());
         return blogList;
     }
 
+    /**
+     * 游戏文章推荐
+     */
+    public Set<Blog> selectRecommend(Integer blogId) {
+        Blog blog = this.selectById(blogId);
+        String tags = blog.getTags();
+        Set<Blog> blogSet = new HashSet<>();
+        if (ObjectUtil.isNotEmpty(tags)) {
+            List<Blog> blogList = this.selectAll(null);
+            JSONArray tagsArr = JSONUtil.parseArray(tags);
+            for (Object tag : tagsArr) {
+                // 筛选出包含当前博客标签的其他的博客列表
+                Set<Blog> collect = blogList.stream().filter(b -> b.getTags().contains(tag.toString()) && !blogId.equals(b.getId()))
+                        .collect(Collectors.toSet());
+                blogSet.addAll(collect);
+            }
+        }
+        blogSet = blogSet.stream().limit(5).collect(Collectors.toSet());
+        blogSet.forEach(b -> {
+            int likesCount = likesService.selectByFidAndModule(b.getId(), LikesModuleEnum.BLOG.getValue());
+            b.setLikesCount(likesCount);
+        });
+        return blogSet;
+    }
 }
