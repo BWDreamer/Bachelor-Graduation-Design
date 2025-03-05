@@ -24,7 +24,8 @@ const routes = [
       {path:'category',name:'Category', meta: {name: '游戏类型' }, component:()=>import('../views/manager/Category.vue')},
       {path:'blog',name:'Blog', meta: {name: '游戏文章' }, component:()=>import('../views/manager/Blog.vue')},
       {path:'activity',name:'Activity', meta: {name: '游戏活动' }, component:()=>import('../views/manager/Activity.vue')},
-      { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice') },
+      { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice.vue') },
+      { path: 'comment', name: 'Comment', meta: { name: '评论信息' }, component: () => import('../views/manager/Comment.vue') },
     ]
   },
   {

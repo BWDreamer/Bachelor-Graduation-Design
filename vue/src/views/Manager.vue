@@ -57,19 +57,21 @@
             </template>
             <el-menu-item index="3">我的收藏</el-menu-item>
           </el-submenu>
-          <el-submenu index="forum" v-if="user.role==='管理员'">
+          <el-submenu index="dialogue" v-if="user.role==='管理员'">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>交流论坛</span>
             </template>
-            <el-menu-item index="5">交流论坛</el-menu-item>
+            <el-menu-item index="/comment">评论信息</el-menu-item>
+            <el-menu-item index="1">在线聊天室</el-menu-item>
           </el-submenu>
           <el-submenu index="system" v-if="user.role==='管理员'">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>系统管理</span>
             </template>
-            <el-menu-item index="6">轮播图管理</el-menu-item>
+            <el-menu-item index="/notice">公告信息</el-menu-item>
+            <el-menu-item index="2">轮播图管理</el-menu-item>
           </el-submenu>
         </el-menu>
 

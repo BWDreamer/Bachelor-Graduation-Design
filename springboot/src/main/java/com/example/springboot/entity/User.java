@@ -28,5 +28,8 @@ public class User {
     private String role;
 
     @TableField(exist = false)
+    private String newPassword;
+
+    @TableField(exist = false)
     private String token;
 }

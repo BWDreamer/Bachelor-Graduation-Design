@@ -32,8 +32,8 @@ public class FileController {
 
     private static final String ROOT_PATH = System.getProperty("user.dir") + File.separator + "files";  // G:\CQPUT2025-Graduation\files
 
-    @PostMapping("/files/upload")
-    public Result upload(MultipartFile file) throws IOException {
+    @PostMapping("/file/upload")
+    public Result upload2(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件名+后缀名
         String mainName = FileUtil.mainName(originalFilename);  // 文件名
         String extName = FileUtil.extName(originalFilename);    // 后缀名
