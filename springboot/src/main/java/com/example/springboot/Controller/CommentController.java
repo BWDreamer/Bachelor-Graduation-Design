@@ -72,6 +72,12 @@ public class CommentController {
         return Result.success(list);
     }
 
+    @GetMapping("/selectForUser")
+    public Result selectForUser(Comment comment) {
+        List<Comment> list = commentService.selectForUser(comment);
+        return Result.success(list);
+    }
+
     /**
      * 分页查询
      */
@@ -83,4 +89,10 @@ public class CommentController {
         return Result.success(page);
     }
 
+    @GetMapping("/selectCount")
+    public Result selectCount(@RequestParam Integer fid, @RequestParam String module) {
+        Integer count = commentService.selectCount(fid, module);
+        return Result.success(count);
+    }
+    
 }

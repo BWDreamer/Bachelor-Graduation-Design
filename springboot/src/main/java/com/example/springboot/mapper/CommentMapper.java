@@ -1,6 +1,8 @@
 package com.example.springboot.mapper;
 
 import com.example.springboot.entity.Comment;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -34,4 +36,11 @@ public interface CommentMapper {
      */
     List<Comment> selectAll(Comment comment);
 
+    /**
+     * 查询前台展示的评论信息
+     */
+    List<Comment> selectForUser(Comment comment);
+
+    @Select("select count(*) from comment where fid = #{fid} and module = #{module}")
+    Integer selectCount(@Param("fid") Integer fid, @Param("module") String module);
 }

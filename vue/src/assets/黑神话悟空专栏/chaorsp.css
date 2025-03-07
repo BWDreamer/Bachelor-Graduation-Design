@@ -1,0 +1,49 @@
+.video-container{
+    position: absolute;
+    top: 100px;
+    height: 600px;
+    width: 1000px;
+}
+.video{
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+ /* CSS样式 */
+ body,
+ html {
+     margin: 0;
+     padding: 0;
+     height: 100%;
+     background-image: url('./img/3.avif');
+ }
+ .section {
+     height: 100vh;
+     /* 每个部分的高度等于视口高度 */
+     width: 100%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     transition: background-color 0.5s;
+     /* 平滑过渡背景色 */
+ }
+ .video-background {
+     position: fixed;
+     right: 50;
+     bottom: 50;
+     min-width: 100%;
+     min-height: 100%;
+     width:auto;
+     height: auto;
+     z-index: -1000;
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+ }
+
+
+ 

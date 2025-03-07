@@ -1,13 +1,17 @@
 package com.example.springboot.service;
 
+import cn.hutool.core.date.DateUtil;
 import com.example.springboot.entity.Comment;
+import com.example.springboot.entity.User;
 import com.example.springboot.mapper.CommentMapper;
+import com.example.springboot.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 业务处理
@@ -22,7 +26,16 @@ public class CommentService {
      * 新增
      */
     public void add(Comment comment) {
-        commentMapper.insert(comment);
+        User currentUser = TokenUtils.getCurrentUser();
+        if (currentUser != null) {
+            comment.setUserId(currentUser.getId());
+        }
+        comment.setTime(DateUtil.now());
+        commentMapper.insert(comment);  //  先插入数据  拿到主键ID  再设置数据
+        if (comment.getRootId() == null){
+            comment.setRootId(comment.getId());
+            commentMapper.updateById(comment);  //  注意 更新一下 root_id
+        }
     }
 
     /**
@@ -62,6 +75,18 @@ public class CommentService {
         return commentMapper.selectAll(comment);
     }
 
+    public List<Comment> selectForUser(Comment comment) {
+        List<Comment> commentList = commentMapper.selectForUser(comment);  // 查询一级的评论
+        for (Comment c : commentList) {  // 查询回复列表
+            Comment param = new Comment();
+            param.setRootId(c.getId());
+            List<Comment> children = this.selectAll(param);
+            children = children.stream().filter(child -> !child.getId().equals(c.getId())).collect(Collectors.toList());  // 排除当前查询结果里最外层节点
+            c.setChildren(children);
+        }
+        return commentList;
+    }
+
     /**
      * 分页查询
      */
@@ -71,4 +96,7 @@ public class CommentService {
         return PageInfo.of(list);
     }
 
+    public Integer selectCount(Integer fid, String module) {
+        return commentMapper.selectCount(fid, module);
+    }
 }

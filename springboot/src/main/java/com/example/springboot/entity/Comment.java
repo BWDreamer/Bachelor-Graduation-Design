@@ -2,6 +2,8 @@ package com.example.springboot.entity;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Comment {
 
@@ -24,5 +26,11 @@ public class Comment {
     private String module;
 
     private String userName;
+
+    private String avatar;
+
+    private String replyUser;  // 回复给谁 就是谁的名称
+
+    private List<Comment> children;
 
 }
