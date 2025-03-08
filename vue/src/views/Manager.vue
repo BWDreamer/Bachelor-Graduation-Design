@@ -41,7 +41,8 @@
               <i class="el-icon-menu"></i>
               <span>游戏文章管理</span>
             </template>
-            <el-menu-item index="/blog">游戏文章</el-menu-item>
+            <el-menu-item index="/blog" v-if="user.role==='管理员'">游戏文章</el-menu-item>
+            <el-menu-item index="3" v-if="user.role==='用户'">我的文章</el-menu-item>
           </el-submenu>
           <el-submenu index="news" v-if="user.role==='管理员'">
             <template slot="title">

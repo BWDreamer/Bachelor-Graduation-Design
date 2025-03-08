@@ -28,51 +28,9 @@
             <span style=" cursor: pointer"  @click="setCollect" :class="{ 'active' : blog.userCollect }"><i class="el-icon-star-off"></i> {{ blog.collectCount }}</span>
           </div>
 
-          <!--  评论开始  -->
-          <div class="card">
-            <h2 style="margin-bottom: 20px">评论 {{ commentCount }}</h2>
+          <!--评论-->
+          <Comment :fid="blogId" module="游戏文章" />
 
-            <div style="margin-bottom: 20px">
-              <el-input type="textarea" placeholder="请输入评论内容" v-model="commentContent"></el-input>
-              <div style="text-align: right; margin-top: 5px">
-                <el-button type="primary" @click="addComment">评 论</el-button>
-              </div>
-            </div>
-
-            <div>
-              <div style="display: flex; grid-gap: 20px; margin-bottom: 20px" v-for="item in commentList" :key="item.id">
-                <img :src="item.avatar" alt="" style="width: 50px; height: 50px; border-radius: 50%">
-                <div style="flex: 1">
-                  <!--这是第一级评论-->
-                  <div style="margin-bottom: 10px">
-                    <div style="color: #666; margin-bottom: 10px">{{ item.userName }}</div>
-                    <div style="color: #444; margin-bottom: 10px">{{ item.content }}</div>
-                    <div style="color: #888; font-size: 13px"><span style="margin-right: 20px">{{ item.time }}</span>
-                      <span style="cursor: pointer"><i class="el-icon-s-comment"></i>评论</span>
-                    </div>
-                    <div v-if="item.showReplyInput">
-                      <el-input type="textarea" placeholder="请输入回复内容" v-model="item.replyContent"></el-input>
-                      <div style="text-align: right; margin-top: 5px">
-                        <el-button type="primary" @click="addReplay(item)">回 复</el-button>
-                      </div>
-                    </div>
-                  </div>
-                  <!--这是回复-->
-                  <div style="display: flex;  grid-gap: 20px; margin-bottom: 20px" v-for="sub in item.children" :key="item.id">
-                    <img :src="sub.avatar" alt="" style="width: 50px; height: 50px; border-radius: 50%">
-                    <div style="flex: 1">
-                      <div style="color: #666; margin-bottom: 10px">{{ sub.userName }} <span style="color: #333" v-if="sub.replyUser !== item.userName">回复  {{ sub.replyUser }}</span></div>
-                      <div style="color: #444; margin-bottom: 10px">{{ sub.content }}</div>
-                      <div style="color: #888; font-size: 13px"><span style="margin-right: 20px">{{ sub.time }}</span>
-                        <span style="cursor: pointer"><i class="el-icon-s-comment"></i>评论</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--  评论结束  -->
         </div>
 
         <div style="width: 260px">
@@ -123,13 +81,8 @@
               <img src="@/assets/logo1.png" alt="" style="width: 50px; height: 50px; border-radius: 5px">
             </div>
           </div>
-
         </div>
-
-
-
       </div>
-
       <Footer />
     </div>
   </div>
@@ -138,10 +91,12 @@
 
 <script>
 import Footer from "@/components/Footer";
+import Comment from "@/components/Comment";
 
 export default {
   name: "BlogDetail",
   components: {
+    Comment,
     Footer
   },
   data() {
@@ -150,9 +105,6 @@ export default {
       blog: {},
       tagsArr: [],
       recommendList: [],
-      commentCount: 0,
-      commentContent: '',
-      commentList: [],
       //动画相关变量
       scale: 1,
       width: 0,
@@ -167,7 +119,6 @@ export default {
   },
   created() {
     this.load()
-    this.loadComment()
   },
   mounted() {
     this.initStarCanvas()
@@ -183,28 +134,6 @@ export default {
     cancelAnimationFrame(this.animationFrame);
   },
   methods: {
-    loadComment() {
-      this.$request.get('/comment/selectForUser', {
-        params: {  fid: this.blogId, module: '游戏文章' }
-      }).then(res => {
-        this.commentList = res.data || []
-      })
-
-      this.$request.get('/comment/selectCount',{
-        params: {  fid: this.blogId, module: '游戏文章' }
-      }).then(res => {
-        this.commentCount = res.data || 0
-      })
-    },
-    addComment() {
-      this.$request.post('/comment/add', { content: this.commentContent, fid: this.blogId, module: '游戏文章' }).then(res => {
-        if (res.code === '200') {
-          this.$message.success('操作成功')
-          this.commentContent = ''
-          this.loadComment()  // 重新加载数据
-        }
-      })
-    },
     setLikes() {
       this.$request.post('/likes/set', {  fid: this.blogId, module: '游戏文章' }).then(res => {
         if (res.code === '200') {
@@ -434,6 +363,9 @@ p {
   margin-bottom: 5px;
 }
 .recommend-title:hover {
+  color: #2a60c9;
+}
+.comment-active{
   color: #2a60c9;
 }
 </style>

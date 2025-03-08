@@ -34,7 +34,10 @@ public class CommentService {
         commentMapper.insert(comment);  //  先插入数据  拿到主键ID  再设置数据
         if (comment.getRootId() == null){
             comment.setRootId(comment.getId());
-            commentMapper.updateById(comment);  //  注意 更新一下 root_id
+            if (comment.getRootId() == null){
+                comment.setRootId(comment.getId());
+                commentMapper.updateById(comment);  //  注意 更新一下 root_id
+            }
         }
     }
 
