@@ -1,6 +1,7 @@
 package com.example.springboot.mapper;
 
 import com.example.springboot.entity.Blog;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -34,4 +35,6 @@ public interface BlogMapper{
      */
     List<Blog> selectAll(Blog blog);
 
+    @Select("select * from blog where user_id = #{userId}")
+    List<Blog> selectUserBlog(Integer userId);
 }

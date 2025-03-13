@@ -32,4 +32,13 @@ public class User {
 
     @TableField(exist = false)
     private String token;
+
+    @TableField(exist = false)
+    private Integer blogCount;
+
+    @TableField(exist = false)
+    private Integer likesCount;
+
+    @TableField(exist = false)
+    private Integer collectCount;
 }
