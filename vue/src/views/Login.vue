@@ -154,7 +154,7 @@ export default {
   position: relative;
   height: 100vh;
   overflow: hidden;
-  background-color: rgba(15, 152, 118, 0.2); /* 保留原背景色但增加透明度 */
+  background-color: rgba(15, 152, 118, 0.2);
 }
 
 #videofilm {
@@ -165,7 +165,7 @@ export default {
   min-width: 100%;
   min-height: 100%;
   z-index: 0;
-  filter: brightness(0.8); /* 增加视频明暗度 */
+  filter: brightness(0.8);
 }
 
 .login-box {
