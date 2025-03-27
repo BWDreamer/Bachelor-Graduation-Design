@@ -1,6 +1,7 @@
 package com.example.springboot.mapper;
 
 import com.example.springboot.entity.Activity;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -33,5 +34,8 @@ public interface ActivityMapper {
      * 查询所有
      */
     List<Activity> selectAll(Activity activity);
+
+    @Update("update activity set read_count = read_count + 1 where id = #{activityId}")
+    void updateReadCount(Integer activityId);
 
 }

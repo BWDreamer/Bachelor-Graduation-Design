@@ -2,7 +2,7 @@ package com.example.springboot.common;
 
 public enum LikesModuleEnum {
     BLOG("游戏文章"),
-    ACTIVITY("游戏资讯");
+    ACTIVITY("活动");
 
     private String value;
 

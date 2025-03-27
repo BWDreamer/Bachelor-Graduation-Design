@@ -50,6 +50,7 @@
               <span>游戏资讯管理</span>
             </template>
             <el-menu-item index="/activity">游戏活动</el-menu-item>
+            <el-menu-item index="/activitySign">活动报名</el-menu-item>
           </el-submenu>
           <el-submenu index="star" v-if="user.role==='用户'">
             <template slot="title">

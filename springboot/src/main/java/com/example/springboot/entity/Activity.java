@@ -1,6 +1,8 @@
 package com.example.springboot.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 public class Activity {
@@ -25,5 +27,22 @@ public class Activity {
     private Integer readCount;
     private String content;
     private String cover;
+
+    @Setter
+    @Getter
+    private Boolean isEnd;  //活动是否结束
+    @Setter
+    @Getter
+    private Boolean isSign; //是否报名
+
+    private Integer likesCount;
+    private Integer collectCount;
+
+    @Setter
+    @Getter
+    private Boolean isLike; //是否已点过赞
+    @Setter
+    @Getter
+    private Boolean isCollect;  //是否已收藏
 
 }

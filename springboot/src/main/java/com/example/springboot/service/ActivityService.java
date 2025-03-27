@@ -1,12 +1,16 @@
 package com.example.springboot.service;
 
-import com.example.springboot.entity.Activity;
+import cn.hutool.core.date.DateUtil;
+import com.example.springboot.common.LikesModuleEnum;
+import com.example.springboot.entity.*;
 import com.example.springboot.mapper.ActivityMapper;
+import com.example.springboot.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +22,15 @@ public class ActivityService {
 
     @Resource
     private ActivityMapper activityMapper;
+
+    @Resource
+    ActivitySignService activitySignService;
+
+    @Resource
+    LikesService likesService;
+
+    @Resource
+    CollectService collectService;
 
     /**
      * 新增
@@ -53,7 +66,20 @@ public class ActivityService {
      * 根据ID查询
      */
     public Activity selectById(Integer id) {
-        return activityMapper.selectById(id);
+        Activity activity = activityMapper.selectById(id);
+        this.setAct(activity, TokenUtils.getCurrentUser());
+
+        int likesCount = likesService.selectByFidAndModule(id, LikesModuleEnum.ACTIVITY.getValue());
+        int collectCount = collectService.selectByFidAndModule(id, LikesModuleEnum.ACTIVITY.getValue());
+        activity.setLikesCount(likesCount);
+        activity.setCollectCount(collectCount);
+
+        Likes likes = likesService.selectUserLikes(id, LikesModuleEnum.ACTIVITY.getValue());
+        activity.setIsLike(likes != null);
+
+        Collect collect = collectService.selectUserCollect(id, LikesModuleEnum.ACTIVITY.getValue());
+        activity.setIsCollect(collect != null);
+        return activity;
     }
 
     /**
@@ -69,7 +95,20 @@ public class ActivityService {
     public PageInfo<Activity> selectPage(Activity activity, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Activity> list = activityMapper.selectAll(activity);
-        return PageInfo.of(list);
+        PageInfo<Activity> pageInfo = PageInfo.of(list);
+        List<Activity> activityList = pageInfo.getList();
+        User currentUser = TokenUtils.getCurrentUser();
+        for (Activity act : activityList) {
+            this.setAct(act, currentUser);
+        }
+        return pageInfo;
+    }
+
+    //设置活动额外信息
+    private void setAct(Activity act, User currentUser){
+        act.setIsEnd(DateUtil.parseDate(act.getEnd()).isBefore(new Date()));  // 活动的结束时间在当前时间之前  就表示活动结束了
+        ActivitySign activitySign = activitySignService.selectByActivityIdAndUserId(act.getId(), currentUser.getId());
+        act.setIsSign(activitySign != null);
     }
 
     /**
@@ -81,6 +120,10 @@ public class ActivityService {
                 .limit(2)
                 .collect(Collectors.toList());
         return activityList;
+    }
+
+    public void updateReadCount(Integer activityId) {
+        activityMapper.updateReadCount(activityId);
     }
 
 }

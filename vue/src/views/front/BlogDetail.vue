@@ -119,6 +119,7 @@ export default {
   },
   created() {
     this.load()
+    this.$request.put('/blog/updateReadCount/' + this.blogId)
   },
   mounted() {
     this.initStarCanvas()
@@ -163,6 +164,9 @@ export default {
         this.recommendList = res.data || []
       })
     },
+
+
+
     // 星空动画方法
     initStarCanvas() {
       const canvas = this.$refs.canvas;

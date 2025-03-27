@@ -23,9 +23,10 @@ const routes = [
       {path:'password',name:'Password', meta: {name: '修改密码' }, component:()=>import('../views/manager/Password.vue')},
       {path:'category',name:'Category', meta: {name: '游戏类型' }, component:()=>import('../views/manager/Category.vue')},
       {path:'blog',name:'Blog', meta: {name: '游戏文章' }, component:()=>import('../views/manager/Blog.vue')},
-      {path:'activity',name:'Activity', meta: {name: '游戏活动' }, component:()=>import('../views/manager/Activity.vue')},
+      {path:'activity',name:'Activity', meta: {name: '活动' }, component:()=>import('../views/manager/Activity.vue')},
       { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice.vue') },
       { path: 'comment', name: 'Comment', meta: { name: '评论信息' }, component: () => import('../views/manager/Comment.vue') },
+      { path: 'activitySign', name: 'ActivitySign', meta: { name: '活动报名' }, component: () => import('../views/manager/ActivitySign.vue') },
     ]
   },
   {
@@ -37,6 +38,8 @@ const routes = [
       { path: 'person', name: 'Person', meta: { name: '个人信息' }, component: () => import('../views/front/Person.vue') },
       { path: 'blogDetail', name: 'BlogDetail', meta: { name: '游戏文章详情' }, component: () => import('../views/front/BlogDetail.vue') },
       { path: 'search', name: 'Search', meta: { name: '游戏文章搜索' }, component: () => import('../views/front/Search.vue') },
+      { path: 'activity', name: 'Activity', meta: { name: '活动中心' }, component: () => import('../views/front/Activity.vue') },
+      { path: 'activityDetail', name: 'ActivityDetail', meta: { name: '活动详情' }, component: () => import('../views/front/ActivityDetail.vue') },
     ]
   },
   {path: '/login', name: 'Login', meta: {name: '登录' }, component: () => import('../views/Login.vue')},

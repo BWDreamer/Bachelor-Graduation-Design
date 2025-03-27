@@ -2,6 +2,7 @@ package com.example.springboot.mapper;
 
 import com.example.springboot.entity.Blog;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -37,4 +38,7 @@ public interface BlogMapper{
 
     @Select("select * from blog where user_id = #{userId}")
     List<Blog> selectUserBlog(Integer userId);
+
+    @Update("update blog set read_count = read_count + 1 where id = #{blogId}")
+    void updateReadCount(Integer blogId);
 }

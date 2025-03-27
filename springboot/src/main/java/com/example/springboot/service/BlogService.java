@@ -109,10 +109,6 @@ public class BlogService {
         Collect userCollect = collectService.selectUserCollect(id, LikesModuleEnum.BLOG.getValue());
         blog.setUserCollect(userCollect != null);
 
-        //更新博客浏览数据
-        blog.setReadCount(blog.getReadCount() + 1);
-        this.updateById(blog);
-
         return blog;
     }
 
@@ -170,5 +166,9 @@ public class BlogService {
             b.setLikesCount(likesCount);
         });
         return blogSet;
+    }
+
+    public void updateReadCount(Integer blogId) {
+        blogMapper.updateReadCount(blogId);
     }
 }
