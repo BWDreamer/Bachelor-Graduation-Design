@@ -84,9 +84,6 @@ export default {
       }
     }
   },
-  created() {
-
-  },
   methods: {
     update() {
       // 保存当前的用户信息到数据库

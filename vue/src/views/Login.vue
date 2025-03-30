@@ -121,7 +121,8 @@ export default {
           // 验证通过
           this.$request.post('/login', this.user).then(res => {
             if (res.code === '200') {
-              this.$router.push('/')
+              const routePath = res.data.role === '管理员' ? '/' : '/front/home';
+              this.$router.push(routePath);
               this.$message.success('登陆成功')
               localStorage.setItem("web-user", JSON.stringify(res.data))  // 存储用户数据
             }else {

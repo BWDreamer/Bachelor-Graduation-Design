@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row :gutter="10">
+    <el-row :gutter="10" v-if="total">
       <el-col :span="span" v-for="item in tableData" :key="item.id">
         <div class="card" style="margin-bottom: 10px" @click="goDetail(item.id)">
           <img :src="item.cover" alt="" style="width: 100%; height: 150px; border-radius: 5px">
@@ -14,8 +14,8 @@
         </div>
       </el-col>
     </el-row>
-
-    <div class="card" style="padding: 10px">
+    <div class="card" v-if="total === 0" style="text-align: center; font-size: 16px; color: #666">暂无数据</div>
+    <div class="card" style="padding: 10px" v-if="total">
       <el-pagination
           background
           @current-change="handleCurrentChange"
@@ -59,6 +59,9 @@ export default {
       let url
       switch (this.type) {
         case 'user': url = '/activity/selectUser'; break;
+        case 'like': url = '/activity/selectLike'; break;
+        case 'collect': url = '/activity/selectCollect'; break;
+        case 'comment': url = '/activity/selectComment'; break;
         default: url = '/activity/selectPage'
       }
       this.$request.get(url, {

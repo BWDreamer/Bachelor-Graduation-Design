@@ -107,6 +107,39 @@ public class BlogController {
     }
 
     /**
+     * 分页查询当前用户点赞的文章列表
+     */
+    @GetMapping("/selectLike")
+    public Result selectLike(Blog blog,
+                             @RequestParam(defaultValue = "1") Integer pageNum,
+                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Blog> page = blogService.selectLike(blog, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    /**
+     * 分页查询当前用户收藏的文章列表
+     */
+    @GetMapping("/selectCollect")
+    public Result selectCollect(Blog blog,
+                                @RequestParam(defaultValue = "1") Integer pageNum,
+                                @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Blog> page = blogService.selectCollect(blog, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    /**
+     * 分页查询当前用户评论的文章列表
+     */
+    @GetMapping("/selectComment")
+    public Result selectComment(Blog blog,
+                                @RequestParam(defaultValue = "1") Integer pageNum,
+                                @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Blog> page = blogService.selectComment(blog, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    /**
      * 游戏文章榜单
      */
     @GetMapping("/selectTop")

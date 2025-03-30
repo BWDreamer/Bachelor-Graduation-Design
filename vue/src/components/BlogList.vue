@@ -15,7 +15,7 @@
               <span v-if="showOpt" style="margin-left: 10px; color: #2a60c9; cursor: pointer" @click="editBlog(item.id)"><i class="el-icon-edit"></i>编辑</span>
             </div>
             <div style="width: fit-content">
-              <el-tag v-for="item in JSON.parse(item.tags || '[]')" :key="item" type="primary" style="margin-right:5px">{{ item }}</el-tag>
+              <el-tag v-for="(item, index) in JSON.parse(item.tags || '[]')" :key="index" type="primary" style="margin-right:5px">{{ item }}</el-tag>
             </div>
           </div>
         </div>
@@ -23,7 +23,7 @@
           <img style="width: 100%; height: 80px; border-radius: 5px" :src="item.cover" alt="">
         </div>
       </div>
-      <div v-if="total === 0" style="padding: 20px 0; text-align: center; font-size: 16px; color: #666">暂无数据</div>
+      <div v-if="total === 0" style="padding: 20px ;text-align: center; font-size: 16px; color: #666">暂无数据</div>
       <div style="margin-top: 10px" v-if="total">
         <el-pagination
             background
@@ -86,6 +86,15 @@ export default {
       switch (this.type) {
         case 'user':
           url = '/blog/selectUser';
+          break;
+        case 'like':
+          url = '/blog/selectLike';
+          break;
+        case 'collect':
+          url = '/blog/selectCollect';
+          break;
+        case 'comment':
+          url = '/blog/selectComment';
           break;
         default:
           url = '/blog/selectPage'

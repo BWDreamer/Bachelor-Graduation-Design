@@ -50,4 +50,8 @@ public class ActivitySignService {
             this.deleteById(id);
         }
     }
+
+    public void userDelete(Integer activityId, Integer userId) {
+        activitySignMapper.userDelete(activityId, userId);
+    }
 }

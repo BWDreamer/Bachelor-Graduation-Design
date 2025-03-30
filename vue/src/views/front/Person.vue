@@ -3,7 +3,7 @@
 
     <el-tabs v-model="activeName" @tab-click="clickTab">
       <el-tab-pane label="个人资料" name="个人资料">
-        <person-page />
+        <person-page @update:user="updateUser" />
       </el-tab-pane>
       <el-tab-pane label="我发表的文章" name="我发表的文章">
         <div class="card" style="padding: 5px"><el-button type="primary" @click="addBlog">发表新文章</el-button></div>
@@ -14,9 +14,36 @@
       <el-tab-pane label="我报名的活动" name="我报名的活动">
         <activity-list type="user" :span="8" />
       </el-tab-pane>
-      <el-tab-pane label="我的点赞" name="我的点赞"></el-tab-pane>
-      <el-tab-pane label="我的收藏" name="我的收藏"></el-tab-pane>
-      <el-tab-pane label="我的评论" name="我的评论"></el-tab-pane>
+      <el-tab-pane label="我的点赞" name="我的点赞">
+        <div class="card" style="padding: 5px; display: flex">
+          <div class="category-btn" :class="{'active' : likesCurrent==='文章'}" @click="likesCurrent='文章'">文章</div>
+          <div class="category-btn" :class="{'active' : likesCurrent==='活动'}" @click="likesCurrent='活动'">活动</div>
+        </div>
+        <div style="margin-top: 10px">
+          <blog-list v-if="likesCurrent==='文章'" type="like"></blog-list>
+          <activity-list v-if="likesCurrent==='活动'" :span="8" type="like"></activity-list>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="我的收藏" name="我的收藏">
+        <div class="card" style="padding: 5px; display: flex">
+          <div class="category-btn" :class="{'active' : collectCurrent==='文章'}" @click="collectCurrent='文章'">文章</div>
+          <div class="category-btn" :class="{'active' : collectCurrent==='活动'}" @click="collectCurrent='活动'">活动</div>
+        </div>
+        <div style="margin-top: 10px">
+          <blog-list v-if="collectCurrent==='文章'" type="collect"></blog-list>
+          <activity-list v-if="collectCurrent==='活动'" :span="8" type="collect"></activity-list>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="我的评论" name="我的评论">
+        <div class="card" style="padding: 5px; display: flex">
+          <div class="category-btn" :class="{'active' : commentCurrent==='文章'}" @click="commentCurrent='文章'">文章</div>
+          <div class="category-btn" :class="{'active' : commentCurrent==='活动'}" @click="commentCurrent='活动'">活动</div>
+        </div>
+        <div style="margin-top: 10px">
+          <blog-list v-if="commentCurrent==='文章'" type="comment"></blog-list>
+          <activity-list v-if="commentCurrent==='活动'" :span="8" type="comment"></activity-list>
+        </div>
+      </el-tab-pane>
     </el-tabs>
 
     <Footer />
@@ -61,13 +88,17 @@ export default {
           { validator: validatePassword, required: true, trigger: 'blur' },
         ],
       },
-      activeName: '个人资料'
+      activeName: '个人资料',
+      likesCurrent: '文章',
+      collectCurrent: '文章',
+      commentCurrent: '文章',
     }
   },
-  created() {
-
-  },
   methods: {
+    updateUser() {
+      // 触发父级的数据更新
+      this.$emit('update:user')
+    },
     addBlog() {
       window.open('/front/newBlog')
     },
@@ -148,5 +179,15 @@ export default {
   height: 120px;
   display: block;
   border-radius: 50%;
+}
+.category-btn {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.active{
+  background-color: #2a60c9 !important;
+  color: white !important;
 }
 </style>

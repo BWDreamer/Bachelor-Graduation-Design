@@ -39,4 +39,10 @@ public interface ActivityMapper {
     void updateReadCount(Integer activityId);
 
     List<Activity> selectUser(Activity activity);
+
+    List<Activity> selectLike(Activity activity);
+
+    List<Activity> selectCollect(Activity activity);
+
+    List<Activity> selectComment(Activity activity);
 }

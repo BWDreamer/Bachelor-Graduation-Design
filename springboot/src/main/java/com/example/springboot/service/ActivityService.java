@@ -141,4 +141,49 @@ public class ActivityService {
         }
         return pageInfo;
     }
+
+    public PageInfo<Activity> selectLike(Activity activity, Integer pageNum, Integer pageSize) {
+        User currentUser = TokenUtils.getCurrentUser();
+        if ("用户".equals(currentUser.getRole())) {
+            activity.setUserId(currentUser.getId());
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Activity> list = activityMapper.selectLike(activity);
+        PageInfo<Activity> pageInfo = PageInfo.of(list);
+        List<Activity> activityList = pageInfo.getList();
+        for (Activity act : activityList) {
+            this.setAct(act, currentUser);
+        }
+        return pageInfo;
+    }
+
+    public PageInfo<Activity> selectCollect(Activity activity, Integer pageNum, Integer pageSize) {
+        User currentUser = TokenUtils.getCurrentUser();
+        if ("用户".equals(currentUser.getRole())) {
+            activity.setUserId(currentUser.getId());
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Activity> list = activityMapper.selectCollect(activity);
+        PageInfo<Activity> pageInfo = PageInfo.of(list);
+        List<Activity> activityList = pageInfo.getList();
+        for (Activity act : activityList) {
+            this.setAct(act, currentUser);
+        }
+        return pageInfo;
+    }
+
+    public PageInfo<Activity> selectComment(Activity activity, Integer pageNum, Integer pageSize) {
+        User currentUser = TokenUtils.getCurrentUser();
+        if ("用户".equals(currentUser.getRole())) {
+            activity.setUserId(currentUser.getId());
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Activity> list = activityMapper.selectComment(activity);
+        PageInfo<Activity> pageInfo = PageInfo.of(list);
+        List<Activity> activityList = pageInfo.getList();
+        for (Activity act : activityList) {
+            this.setAct(act, currentUser);
+        }
+        return pageInfo;
+    }
 }
