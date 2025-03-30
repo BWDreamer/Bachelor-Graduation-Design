@@ -45,4 +45,6 @@ public class Activity {
     @Getter
     private Boolean isCollect;  //是否已收藏
 
+    private Integer userId;
+
 }

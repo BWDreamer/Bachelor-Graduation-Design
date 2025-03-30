@@ -94,6 +94,17 @@ public class ActivityController {
     }
 
     /**
+     * 查询用户报名的活动列表
+     */
+    @GetMapping("/selectUser")
+    public Result selectUser(Activity activity,
+                             @RequestParam(defaultValue = "1") Integer pageNum,
+                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Activity> page = activityService.selectUser(activity, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    /**
      * 热门游戏资讯榜单
      */
     @GetMapping("/selectTop")

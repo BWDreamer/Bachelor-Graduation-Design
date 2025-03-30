@@ -96,6 +96,17 @@ public class BlogController {
     }
 
     /**
+     * 分页查询当前用户的文章列表
+     */
+    @GetMapping("/selectUser")
+    public Result selectUser(Blog blog,
+                             @RequestParam(defaultValue = "1") Integer pageNum,
+                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Blog> page = blogService.selectUser(blog, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    /**
      * 游戏文章榜单
      */
     @GetMapping("/selectTop")

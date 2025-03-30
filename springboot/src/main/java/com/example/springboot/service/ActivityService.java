@@ -126,4 +126,19 @@ public class ActivityService {
         activityMapper.updateReadCount(activityId);
     }
 
+    // 查询出用户报名的活动列表
+    public PageInfo<Activity> selectUser(Activity activity, Integer pageNum, Integer pageSize) {
+        User currentUser = TokenUtils.getCurrentUser();
+        if ("用户".equals(currentUser.getRole())) {
+            activity.setUserId(currentUser.getId());
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Activity> list = activityMapper.selectUser(activity);
+        PageInfo<Activity> pageInfo = PageInfo.of(list);
+        List<Activity> activityList = pageInfo.getList();
+        for (Activity act : activityList) {
+            this.setAct(act, currentUser);
+        }
+        return pageInfo;
+    }
 }

@@ -171,4 +171,12 @@ public class BlogService {
     public void updateReadCount(Integer blogId) {
         blogMapper.updateReadCount(blogId);
     }
+
+    public PageInfo<Blog> selectUser(Blog blog, Integer pageNum, Integer pageSize) {
+        User currentUser = TokenUtils.getCurrentUser();
+        if ("用户".equals(currentUser.getRole())){
+            blog.setUserId(currentUser.getId());
+        }
+        return this.selectPage(blog,pageNum,pageSize);
+    }
 }

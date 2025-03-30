@@ -4,7 +4,7 @@
     <div class="main-content">
       <div style="display: flex; grid-gap: 10px">
 
-        <div style="flex: 1">
+        <div style="flex: 1; width: 0">
           <div class="card" style="padding: 30px; margin-bottom: 10px">
             <div style="font-weight: bold; font-size: 24px; margin-bottom: 20px">{{ blog.title }}</div>
             <div style="color: #666; margin-bottom: 20px">
@@ -327,7 +327,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -1; /* 确保在内容下方 */
+  z-index: -1;
   width: 100%;
   height: 100%;
   background-image: linear-gradient(-225deg, #231557 0%, #43107a 29%, #FF1361 100%);
@@ -371,5 +371,12 @@ p {
 }
 .comment-active{
   color: #2a60c9;
+}
+pre {
+  white-space: pre-wrap; /*css-3*/
+  white-space: -moz-pre-wrap; /*Mozilla,since1999*/
+  white-space: pre-wrap; /*Opera4-6*/
+  white-space: -o-pre-wrap; /*Opera7*/
+  word-wrap: break-word; /*InternetExplorer5.5+*/
 }
 </style>

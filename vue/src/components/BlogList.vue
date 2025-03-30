@@ -1,15 +1,18 @@
 <template>
   <div>
-    <div class="card" style="min-height: 80vh; background: rgba(255, 255, 255, 0.85); border-radius: 10px">
+    <div class="card" style="min-height: 80vh">
       <div class="blog-box" v-for="item in tableData" :key="item.id" v-if="total > 0">
         <div style="flex: 1; width: 0">
           <a :href="'/front/blogDetail?blogId=' + item.id" target="_blank"><div class="blog-title">{{ item.title }}</div></a>
           <div class="line1" style="color: #666; margin-bottom: 10px; font-size: 13px">{{ item.descr }}</div>
-          <div style="display: flex">
+          <div style="display: flex; align-items: center">
             <div style="flex: 1; font-size: 13px">
               <span style="color: #666; margin-right: 20px"><i class="el-icon-user"></i> {{ item.userName }}</span>
               <span style="color: #666; margin-right: 20px"><i class="el-icon-eye"></i> {{ item.readCount }}</span>
               <span style="color: #666"><i class="el-icon-like"></i> {{ item.likesCount }}</span>
+
+              <span v-if="showOpt" style="margin-left: 40px; color: red; cursor: pointer" @click="del(item.id)"><i class="el-icon-delete"></i>删除</span>
+              <span v-if="showOpt" style="margin-left: 10px; color: #2a60c9; cursor: pointer" @click="editBlog(item.id)"><i class="el-icon-edit"></i>编辑</span>
             </div>
             <div style="width: fit-content">
               <el-tag v-for="item in JSON.parse(item.tags || '[]')" :key="item" type="primary" style="margin-right:5px">{{ item }}</el-tag>
@@ -40,7 +43,9 @@
 export default {
   name: "BlogList",
   props: {
-    categoryName: null
+    categoryName: null,
+    type: null,
+    showOpt: false
   },
   data() {
     return {
@@ -59,14 +64,38 @@ export default {
     this.loadBlogs(1)
   },
   methods: {
+    editBlog(blogId) {
+      window.open('/front/newBlog?blogId=' + blogId)
+    },
+    del(id) {   // 单个删除
+      this.$confirm('您确定删除吗？', '确认删除', {type: "warning"}).then(response => {
+        this.$request.delete('/blog/delete/' + id).then(res => {
+          if (res.code === '200') {   // 表示操作成功
+            this.$message.success('操作成功')
+            this.loadBlogs(1)
+          } else {
+            this.$message.error(res.msg)  // 弹出错误的信息
+          }
+        })
+      }).catch(() => {
+      })
+    },
     loadBlogs(pageNum) {
       if (pageNum) this.pageNum = pageNum
-      this.$request.get('/blog/selectPage', {
+      let url
+      switch (this.type) {
+        case 'user':
+          url = '/blog/selectUser';
+          break;
+        default:
+          url = '/blog/selectPage'
+      }
+      this.$request.get(url, {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           categoryName: this.categoryName === '全部游戏类型' ? null : this.categoryName,
-          title: this.$route.query.title,
+          title: this.$route.query.title
         }
       }).then(res => {
         this.tableData = res.data?.list
@@ -92,7 +121,7 @@ export default {
   padding-top: 0;
 }
 
-.blog-title{
+.blog-title {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;

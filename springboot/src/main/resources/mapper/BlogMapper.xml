@@ -20,6 +20,7 @@
             <if test="title != null">and blog.title like concat('%', #{title}, '%')</if>
             <if test="categoryName != null">and category.name like concat('%', #{categoryName}, '%')</if>
             <if test="userName != null">and user.name like concat('%', #{userName}, '%')</if>
+            <if test="userId != null">and user.id = #{userId}</if>
         </where>
         order by id desc
     </select>

@@ -1,41 +1,62 @@
 <template>
-  <div class="main-content" style="width: 50%">
-
-    <el-tabs v-model="activeName" @tab-click="clickTab">
-      <el-tab-pane label="个人资料" name="个人资料">
-        <person-page />
-      </el-tab-pane>
-      <el-tab-pane label="我发表的文章" name="我发表的文章">
-        <div class="card" style="padding: 5px"><el-button type="primary" @click="addBlog">发表新文章</el-button></div>
-        <div style="margin-top: 10px">
-          <blog-list type="user" :show-opt="true" />
+  <div>
+    <el-card>
+      <div style="text-align: right; margin-bottom: 20px">
+        <el-button type="primary" @click="updatePassword">修改密码</el-button>
+      </div>
+      <el-form :model="user" label-width="80px" style="padding-right: 20px">
+        <div style="margin: 15px; text-align: center">
+          <el-upload
+              class="avatar-uploader"
+              :action="$baseUrl + '/files/upload'"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+          >
+            <img v-if="user.avatar" :src="user.avatar" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="我报名的活动" name="我报名的活动">
-        <activity-list type="user" :span="8" />
-      </el-tab-pane>
-      <el-tab-pane label="我的点赞" name="我的点赞"></el-tab-pane>
-      <el-tab-pane label="我的收藏" name="我的收藏"></el-tab-pane>
-      <el-tab-pane label="我的评论" name="我的评论"></el-tab-pane>
-    </el-tabs>
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="user.username" placeholder="用户名" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="user.name" placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" prop="phone">
+          <el-input v-model="user.phone" placeholder="电话"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="user.email" placeholder="邮箱"></el-input>
+        </el-form-item>
+        <div style="text-align: center; margin-bottom: 20px">
+          <el-button type="primary" @click="update">保 存</el-button>
+        </div>
+      </el-form>
+    </el-card>
 
-    <Footer />
+    <el-dialog title="修改密码" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false" destroy-on-close>
+      <el-form :model="user" label-width="80px" style="padding-right: 20px" :rules="rules" ref="formRef">
+        <el-form-item label="原始密码" prop="password">
+          <el-input show-password v-model="user.password" placeholder="原始密码"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input show-password v-model="user.newPassword" placeholder="新密码"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="confirmPassword">
+          <el-input show-password v-model="user.confirmPassword" placeholder="确认密码"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
-import PersonPage from "@/components/PersonPage";
-import BlogList from "@/components/BlogList";
-import ActivityList from "@/components/ActivityList";
 
 export default {
-  components: {
-    ActivityList,
-    BlogList,
-    Footer,
-    PersonPage
-  },
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
@@ -60,20 +81,13 @@ export default {
         confirmPassword: [
           { validator: validatePassword, required: true, trigger: 'blur' },
         ],
-      },
-      activeName: '个人资料'
+      }
     }
   },
   created() {
 
   },
   methods: {
-    addBlog() {
-      window.open('/front/newBlog')
-    },
-    clickTab(tab) {
-      console.log(tab)
-    },
     update() {
       // 保存当前的用户信息到数据库
       this.$request.put('/user/update', this.user).then(res => {
