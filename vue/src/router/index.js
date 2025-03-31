@@ -27,6 +27,7 @@ const routes = [
       { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice.vue') },
       { path: 'comment', name: 'Comment', meta: { name: '评论信息' }, component: () => import('../views/manager/Comment.vue') },
       { path: 'activitySign', name: 'ActivitySign', meta: { name: '活动报名' }, component: () => import('../views/manager/ActivitySign.vue') },
+      { path: 'chat', name: 'Chat', meta: { name: '在线聊天' }, component: () => import('../views/front/Chat.vue') },
     ]
   },
   {
@@ -41,6 +42,7 @@ const routes = [
       { path: 'activity', name: 'Activity', meta: { name: '活动中心' }, component: () => import('../views/front/Activity.vue') },
       { path: 'activityDetail', name: 'ActivityDetail', meta: { name: '活动详情' }, component: () => import('../views/front/ActivityDetail.vue') },
       { path: 'newBlog', name: 'NewBlog', meta: { name: '文章编辑' }, component: () => import('../views/front/NewBlog.vue') },
+      { path: 'chat', name: 'Chat', meta: { name: '在线聊天' }, component: () => import('../views/front/Chat.vue') },
     ]
   },
   {path: '/login', name: 'Login', meta: {name: '登录' }, component: () => import('../views/Login.vue')},

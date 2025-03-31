@@ -59,13 +59,13 @@
             </template>
             <el-menu-item index="3">我的收藏</el-menu-item>
           </el-submenu>
-          <el-submenu index="dialogue" v-if="user.role==='管理员'">
+          <el-submenu index="dialogue" v-if="user.role==='管理员' || user.role==='用户'">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>交流论坛</span>
             </template>
-            <el-menu-item index="/comment">评论信息</el-menu-item>
-            <el-menu-item index="1">在线聊天室</el-menu-item>
+            <el-menu-item index="/comment" v-if="user.role==='管理员'">评论信息</el-menu-item>
+            <el-menu-item index="/chat">在线聊天室</el-menu-item>
           </el-submenu>
           <el-submenu index="system" v-if="user.role==='管理员'">
             <template slot="title">
