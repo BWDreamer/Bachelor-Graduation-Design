@@ -40,7 +40,7 @@
       </div>
 
       <!-- 忘记密码弹窗 -->
-      <el-dialog title="忘记密码" :visible.sync="forgetPassDialogVis" width="30%" :modal="false">
+      <el-dialog title="忘记密码" :visible.sync="forgetPassDialogVis" width="30%" :modal="false" class="mask-layer">
         <el-form :model="forgetUserForm" label-width="80px" style="padding-right: 20px">
           <el-form-item label="用户名">
             <el-input v-model="forgetUserForm.username" autocomplete="off" placeholder="请输入用户名"></el-input>
@@ -178,7 +178,6 @@ export default {
   justify-content: center;
 }
 
-/* 原有登录框样式优化 */
 ::v-deep .el-form {
   background: rgba(255, 255, 255, 0.95);
   padding: 30px;
@@ -186,10 +185,20 @@ export default {
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
 }
 
-/* 响应式适配 */
 @media (max-width: 768px) {
   .login-box {
     width: 95% !important;
   }
 }
+
+.mask-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
 </style>

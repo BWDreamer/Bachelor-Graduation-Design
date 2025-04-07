@@ -33,6 +33,23 @@ public class FileController {
     private static final String ROOT_PATH = System.getProperty("user.dir") + File.separator + "files";  // G:\CQPUT2025-Graduation\files
 
     @PostMapping("/file/upload")
+    public Result upload1(MultipartFile file) throws IOException {
+        String originalFilename = file.getOriginalFilename();  // 文件名+后缀名
+        String mainName = FileUtil.mainName(originalFilename);  // 文件名
+        String extName = FileUtil.extName(originalFilename);    // 后缀名
+        if (!FileUtil.exist(ROOT_PATH)) {
+            FileUtil.mkdir(ROOT_PATH);  // 如果当前文件的父级目录不存在，就创建
+        }
+        if (FileUtil.exist(ROOT_PATH + File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
+            originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
+        }
+        File saveFile = new File(ROOT_PATH + File.separator + originalFilename);
+        file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
+        String url = "http://" + ip + ":" + port + "/file/download/" + originalFilename;
+        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+    }
+
+    @PostMapping("/files/upload")
     public Result upload2(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件名+后缀名
         String mainName = FileUtil.mainName(originalFilename);  // 文件名

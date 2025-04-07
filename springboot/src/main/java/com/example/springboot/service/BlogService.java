@@ -9,6 +9,7 @@ import com.example.springboot.entity.Blog;
 import com.example.springboot.entity.Collect;
 import com.example.springboot.entity.Likes;
 import com.example.springboot.entity.User;
+import com.example.springboot.exception.ServiceException;
 import com.example.springboot.mapper.BlogMapper;
 import com.example.springboot.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
@@ -16,6 +17,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -135,8 +137,8 @@ public class BlogService {
     /**
      * 游戏文章榜单
      */
-    public List<Blog> selectTop() {
-        List<Blog> blogList = this.selectAll(null);
+    public List<Blog> selectTop(Blog blog) {
+        List<Blog> blogList = this.selectAll(blog);
         blogList = blogList.stream().sorted((b1, b2) -> b2.getReadCount().compareTo(b1.getReadCount()))
                 .limit(10)
                 .collect(Collectors.toList());
@@ -228,4 +230,12 @@ public class BlogService {
         }
         return pageInfo;
     }
+
+    public void audit(Blog blog) {
+        if (!Arrays.asList("通过", "未通过").contains(blog.getStatus())) {
+            throw new ServiceException("非法状态值");
+        }
+        blogMapper.updateAuditInfo(blog);
+    }
+
 }

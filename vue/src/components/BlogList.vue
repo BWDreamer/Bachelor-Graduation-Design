@@ -10,9 +10,17 @@
               <span style="color: #666; margin-right: 20px"><i class="el-icon-user"></i> {{ item.userName }}</span>
               <span style="color: #666; margin-right: 20px"><i class="el-icon-eye"></i> {{ item.readCount }}</span>
               <span style="color: #666"><i class="el-icon-like"></i> {{ item.likesCount }}</span>
-
               <span v-if="showOpt" style="margin-left: 40px; color: red; cursor: pointer" @click="del(item.id)"><i class="el-icon-delete"></i>删除</span>
               <span v-if="showOpt" style="margin-left: 10px; color: #2a60c9; cursor: pointer" @click="editBlog(item.id)"><i class="el-icon-edit"></i>编辑</span>
+              <template v-if="showOpt">
+                <el-tag v-if="item.status" :type="item.status === '通过' ? 'success' : 'danger'"
+                        size="mini" style="margin-left: 10px">
+                  {{ item.status }}
+                </el-tag>
+                <el-tooltip v-if="item.comment" :content="item.comment" placement="top">
+                  <el-button type="text" style="color:#666;margin-left:10px;padding:0">审核意见</el-button>
+                </el-tooltip>
+              </template>
             </div>
             <div style="width: fit-content">
               <el-tag v-for="(item, index) in JSON.parse(item.tags || '[]')" :key="index" type="primary" style="margin-right:5px">{{ item }}</el-tag>
@@ -101,10 +109,11 @@ export default {
       }
       this.$request.get(url, {
         params: {
+          status: this.type ? null : '通过',
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           categoryName: this.categoryName === '全部游戏类型' ? null : this.categoryName,
-          title: this.$route.query.title
+          title: this.$route.query.title,
         }
       }).then(res => {
         this.tableData = res.data?.list

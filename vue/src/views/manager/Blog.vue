@@ -6,6 +6,11 @@
       <el-input placeholder="请输入用户名称查询" style="width: 200px" v-model="userName"></el-input>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
+      <el-select v-model="status" placeholder="审核状态" clearable style="width: 120px; margin-left: 10px">
+        <el-option label="未审核" value="未审核"></el-option>
+        <el-option label="通过" value="通过"></el-option>
+        <el-option label="未通过" value="未通过"></el-option>
+      </el-select>
     </div>
 
     <div class="operation">
@@ -36,6 +41,18 @@
         <el-table-column prop="userName" label="发布人"></el-table-column>
         <el-table-column prop="date" label="发布时间"></el-table-column>
         <el-table-column prop="readCount" label="浏览量"></el-table-column>
+        <el-table-column prop="status" label="审核状态" align="center">
+          <template v-slot="scope">
+            <el-tag :type="scope.row.status === '通过' ? 'success' : 'danger'">
+              {{ scope.row.status || '未审核' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="审核" align="center" width="120">
+          <template v-slot="scope">
+            <el-button size="mini" type="warning" plain @click="showAuditDialog(scope.row)">审核</el-button>
+          </template>
+        </el-table-column>
         <el-table-column label="查看内容">
           <template v-slot="scope">
             <el-button @click="preview(scope.row.content)">查看内容</el-button>
@@ -114,6 +131,23 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="审核文章" :visible.sync="auditVisible" width="30%">
+      <el-form :model="auditForm" label-width="80px">
+        <el-form-item label="审核状态">
+          <el-select v-model="auditForm.status" placeholder="请选择">
+            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="审核意见">
+          <el-input type="textarea" v-model="auditForm.comment" placeholder="请输入审核意见"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="auditVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitAudit">确定</el-button>
+      </div>
+    </el-dialog>
+
     <el-dialog title="文章内容" :visible.sync="fromVisible1" width="40%" :close-on-click-modal="false" destroy-on-close>
       <div class="w-e-text">
         <div v-html="content"></div>
@@ -158,6 +192,10 @@ export default {
       tagsArr: [],
       editor: null,
       content: '',
+      auditForm: {},
+      auditVisible: false,
+      status: null,
+      statusOptions: ['通过', '未通过']
     }
   },
   created() {
@@ -237,7 +275,7 @@ export default {
       }).catch(() => {
       })
     },
-    load(pageNum) {  // 分页查询
+    load(pageNum) {
       if (pageNum) this.pageNum = pageNum
       this.$request.get('/blog/selectPage', {
         params: {
@@ -246,6 +284,7 @@ export default {
           title: this.title,
           categoryName: this.categoryName,
           userName: this.userName,
+          status: this.status
         }
       }).then(res => {
         this.tableData = res.data?.list
@@ -259,6 +298,7 @@ export default {
       this.title = null
       this.categoryName = null
       this.userName = null
+      this.status = null
       this.load(1)
     },
     handleCurrentChange(pageNum) {
@@ -282,6 +322,29 @@ export default {
         this.editor.create()  // 创建
       })
     },
+    showAuditDialog(row) {
+      this.auditForm = {
+        id: row.id,
+        status: row.status,
+        comment: row.comment || ''
+      }
+      this.auditVisible = true
+    },
+    submitAudit() {
+      this.$request({
+        url: '/blog/audit',
+        method: 'PUT',
+        data: this.auditForm
+      }).then(res => {
+        if (res.code === '200') {
+          this.$message.success('审核状态已更新')
+          this.load()
+          this.auditVisible = false
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    }
   }
 }
 </script>

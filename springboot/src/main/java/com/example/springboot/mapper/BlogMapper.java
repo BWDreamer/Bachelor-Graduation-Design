@@ -1,6 +1,7 @@
 package com.example.springboot.mapper;
 
 import com.example.springboot.entity.Blog;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -34,7 +35,7 @@ public interface BlogMapper{
     /**
      * 查询所有
      */
-    List<Blog> selectAll(Blog blog);
+    List<Blog> selectAll(@Param("blog") Blog blog);
 
     @Select("select * from blog where user_id = #{userId}")
     List<Blog> selectUserBlog(Integer userId);
@@ -47,4 +48,6 @@ public interface BlogMapper{
     List<Blog> selectCollect(Blog blog);
 
     List<Blog> selectComment(Blog blog);
+
+    void updateAuditInfo(Blog blog);
 }

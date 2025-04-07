@@ -91,6 +91,7 @@ public class BlogController {
     public Result selectPage(Blog blog,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {
+        // blog.setStatus("通过");
         PageInfo<Blog> page = blogService.selectPage(blog, pageNum, pageSize);
         return Result.success(page);
     }
@@ -144,7 +145,9 @@ public class BlogController {
      */
     @GetMapping("/selectTop")
     public Result selectTop() {
-        List<Blog> list = blogService.selectTop();
+        Blog blog = new Blog();
+        blog.setStatus("通过");
+        List<Blog> list = blogService.selectTop(blog);
         return Result.success(list);
     }
 
@@ -155,6 +158,15 @@ public class BlogController {
     public Result selectRecommend(@PathVariable Integer blogId) {
         Set<Blog> blogSet = blogService.selectRecommend(blogId);
         return Result.success(blogSet);
+    }
+
+    /**
+     * 审核
+     */
+    @PutMapping("/audit")
+    public Result audit(@RequestBody Blog blog) {
+        blogService.audit(blog);
+        return Result.success();
     }
 
 }

@@ -112,7 +112,11 @@ export default {
       })
     },
     refreshTop() {
-      this.$request.get('/blog/selectTop').then(res => {
+      this.$request.get('/blog/selectTop', {
+        params: {
+          status: '通过'
+        }
+      }).then(res => {
         this.topList = res.data || []
         let i = 1
         this.topList.forEach(item => item.index = i++)

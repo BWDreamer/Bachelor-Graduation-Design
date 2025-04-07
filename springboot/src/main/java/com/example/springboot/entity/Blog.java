@@ -1,6 +1,7 @@
 package com.example.springboot.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -47,6 +48,10 @@ public class Blog {
     private Integer collectCount;
 
     private Boolean userCollect; //返回当前浏览的数据是否被当前登陆的用户收藏
+
+    private String status; // 审核状态
+
+    private String comment; // 审核意见
 
     @Override
     public boolean equals(Object o) {

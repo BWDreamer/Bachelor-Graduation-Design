@@ -1,8 +1,8 @@
 <template>
   <div style="padding: 10px; margin-bottom: 50px">
-    <el-row>
-      <el-col :span="8">
-        <el-card style="width: 100%; min-height: 300px; color: #333">
+    <el-row type="flex" justify="center" style="align-items: stretch">
+      <el-col :span="4" style="margin-right: 5px">
+        <el-card style="height: 100%; color: #333; box-shadow: 0 0 8px rgba(0,0,0,0.1); border-radius: 8px">
           <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc">在线用户<span style="font-size: 12px">（点击聊天气泡开始聊天）</span></div>
           <div style="padding: 10px 0" v-for="user in users" :key="user.username">
             <span>{{ user.username }}</span>
@@ -12,11 +12,10 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="16">
-        <div style="width: 800px; margin: 0 auto; background-color: white;
-                    border-radius: 5px; box-shadow: 0 0 10px #ccc">
+      <el-col :span="9">
+        <div style="height: 100%; margin: 0 auto; background-color: white; border-radius: 5px; box-shadow: 0 0 10px #ccc; max-width: 800px">
           <div style="text-align: center; line-height: 50px;">
-            Web聊天室（{{ chatUser }}）
+            在线聊天室（{{ chatUser }}）
           </div>
           <div style="height: 350px; overflow:auto; border-top: 1px solid #ccc" v-html="content"></div>
           <div style="height: 200px">
