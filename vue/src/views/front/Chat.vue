@@ -1,55 +1,110 @@
 <template>
-  <div style="padding: 10px; margin-bottom: 50px">
-    <el-row type="flex" justify="center" style="align-items: stretch">
-      <el-col :span="4" style="margin-right: 5px">
-        <el-card style="height: 100%; color: #333; box-shadow: 0 0 8px rgba(0,0,0,0.1); border-radius: 8px">
-          <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc">在线用户<span style="font-size: 12px">（点击聊天气泡开始聊天）</span></div>
-          <div style="padding: 10px 0" v-for="user in users" :key="user.username">
-            <span>{{ user.username }}</span>
-            <i class="el-icon-chat-dot-round" style="margin-left: 10px; font-size: 16px; cursor: pointer"
-               @click="chatUser = user.username"></i>
-            <span style="font-size: 12px;color: limegreen; margin-left: 5px" v-if="user.username === chatUser">chatting...</span>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="9">
-        <div style="height: 100%; margin: 0 auto; background-color: white; border-radius: 5px; box-shadow: 0 0 10px #ccc; max-width: 800px">
-          <div style="text-align: center; line-height: 50px;">
-            在线聊天室（{{ chatUser }}）
-          </div>
-          <div style="height: 350px; overflow:auto; border-top: 1px solid #ccc" v-html="content"></div>
-          <div style="height: 200px">
+  <div>
+    <StarBackground/>
+
+    <!-- 顶部导航 -->
+    <div class="nav-top">
+      <div class="user-info">
+        <div v-if="user.name">
+          <el-dropdown>
+            <div class="front-header-dropdown">
+              <img :src="user.avatar" alt="">
+              <div style="margin-left: 10px; color: #fff">
+                <span>{{ user.name }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
+              </div>
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <div style="text-decoration: none" @click="logout">退出</div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主导航 -->
+    <div class="navs">
+      <el-menu :default-active="$route.path" mode="horizontal" router class="el-menu-demo">
+        <el-menu-item v-for="(item, index) in navItems" :key="index" :index="item.path">
+          {{ item.name }}
+        </el-menu-item>
+      </el-menu>
+    </div>
+
+    <div style="padding: 10px; margin: 30px 0 50px">
+      <el-row type="flex" justify="center" style="align-items: stretch">
+        <el-col :span="4" style="margin-right: 5px">
+          <el-card style="height: 100%; color: #333; box-shadow: 0 0 8px rgba(0,0,0,0.1); border-radius: 8px">
+            <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc">在线用户<span style="font-size: 12px">（点击聊天气泡开始聊天）</span></div>
+            <div style="padding: 10px 0" v-for="user in users" :key="user.username">
+              <span>{{ user.username }}</span>
+              <i class="el-icon-chat-dot-round" style="margin-left: 10px; font-size: 16px; cursor: pointer"
+                 @click="chatUser = user.username"></i>
+              <span style="font-size: 12px;color: limegreen; margin-left: 5px" v-if="user.username === chatUser">chatting...</span>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="9">
+          <div style="height: 100%; margin: 0 auto; background-color: white; border-radius: 5px; box-shadow: 0 0 10px #ccc; max-width: 800px">
+            <div style="text-align: center; line-height: 50px;">
+              在线聊天室（{{ chatUser }}）
+            </div>
+            <div style="height: 350px; overflow:auto; border-top: 1px solid #ccc" v-html="content"></div>
+            <div style="height: 200px">
             <textarea v-model="text" style="height: 160px; width: 100%; padding: 20px; border: none; border-top: 1px solid #ccc;
              border-bottom: 1px solid #ccc; outline: none"></textarea>
-            <div style="text-align: right; padding-right: 10px">
-              <el-button type="primary" size="mini" @click="send">发送</el-button>
+              <div style="text-align: right; padding-right: 10px">
+                <el-button type="primary" size="mini" @click="send">发送</el-button>
+              </div>
             </div>
           </div>
-        </div>
-      </el-col>
-    </el-row>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
-import request from "@/utils/request";
+import StarBackground from "@/components/StarBackground.vue";
+
 let socket;
 export default {
   name: "Chat",
+  components: {
+    StarBackground,
+  },
   data() {
     return {
       circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-      user: {},
       isCollapse: false,
       users: [],
       chatUser: '',
       text: "",
       messages: [],
-      content: ''
+      content: '',
+      navItems: [
+        { name: '首页', path: '/front/home' },
+        { name: '游戏文章', path: '/front/blog' },
+        { name: '游戏资讯', path: '/front/activity' },
+        { name: '交流论坛', path: '/front/chat' },
+        { name: '个人中心', path: '/front/person' },
+        { name: '后台管理', path: '/home' }
+      ],
+      user: {
+        username: localStorage.getItem('web-user') ? JSON.parse(localStorage.getItem('web-user')).username : ''
+      }
     }
   },
   created() {
     this.init()
+  },
+  computed: {
+    currentIndex() {
+      return this.navItems.findIndex(item =>
+          this.$route.path.startsWith(item.path.split('/')[1])
+      )
+    }
   },
   methods: {
     send() {
@@ -148,11 +203,19 @@ export default {
           console.log("websocket发生了错误");
         }
       }
-    }
+    },
+    logout() {
+      localStorage.removeItem('web-user');
+      this.$router.push('/login');
+    },
   }
 }
+
 </script>
+
 <style>
+@import "@/assets/css/home.css";
+
 .tip {
   color: white;
   text-align: center;

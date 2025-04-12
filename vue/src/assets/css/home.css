@@ -1,0 +1,164 @@
+.nav-top::before {
+    content: '游戏分享网站';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    background: #000;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 20px;
+    z-index: 1000;
+}
+
+.navs {
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    background: white;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-bottom: 1px solid #eee;
+}
+
+.navs .el-menu {
+    background: white;
+    border-bottom: none;
+}
+
+.navs .el-menu-item {
+    color: #000 !important;
+    font-size: 16px;
+    height: 60px;
+    line-height: 60px;
+}
+
+.navs .el-menu-item:hover {
+    color: #000 !important;
+    background-color: #f5f5f5 !important;
+}
+
+.navs .el-menu-item.is-active {
+    color: #000 !important;
+    border-bottom: 3px solid #BFA457 !important;
+    text-decoration: none !important;
+    position: relative;
+}
+
+.navs .el-menu-item.is-active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    width: 60%;
+    height: 2px;
+    background: #BFA457;
+    transform: translateX(-50%);
+}
+
+.navs ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.navs a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    height: 100%;
+}
+
+.navs li {
+    padding: 0 30px;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+    position: relative;
+}
+
+.navs li:hover {
+    color: #000;
+}
+
+.navs li.current {
+    color: #000;
+    font-weight: bold;
+}
+
+.navs li.current::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 3px;
+    background: #BFA457;
+    transition: all 0.3s;
+}
+
+.carousel-container {
+    margin-top: 0;
+    height: 250px;
+}
+
+.carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.user-info {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.front-header-dropdown {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.front-header-dropdown img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.el-button {
+    color: #fff;
+    border-color: #fff;
+    &:hover {
+        color: #bfa457;
+        border-color: #bfa457;
+    }
+}
+
+.user-link {
+    color: #fff;
+    text-decoration: none;
+    &:hover {
+        color: #bfa457;
+    }
+}
+
+.logout {
+    cursor: pointer;
+    color: #ccc;
+    &:hover {
+        color: #bfa457;
+    }
+}

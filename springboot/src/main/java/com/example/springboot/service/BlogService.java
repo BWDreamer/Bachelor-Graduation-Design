@@ -153,11 +153,16 @@ public class BlogService {
         String tags = blog.getTags();
         Set<Blog> blogSet = new HashSet<>();
         if (ObjectUtil.isNotEmpty(tags)) {
-            List<Blog> blogList = this.selectAll(null);
+            // 创建带状态的查询条件
+            Blog query = new Blog();
+            query.setStatus("通过"); // 设置默认审核状态
+            List<Blog> blogList = this.selectAll(query);
             JSONArray tagsArr = JSONUtil.parseArray(tags);
             for (Object tag : tagsArr) {
-                // 筛选出包含当前博客标签的其他的博客列表
-                Set<Blog> collect = blogList.stream().filter(b -> b.getTags().contains(tag.toString()) && !blogId.equals(b.getId()))
+                Set<Blog> collect = blogList.stream()
+                        .filter(b -> b.getTags().contains(tag.toString())
+                                && !blogId.equals(b.getId())
+                                && "通过".equals(b.getStatus()))
                         .collect(Collectors.toSet());
                 blogSet.addAll(collect);
             }

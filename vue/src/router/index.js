@@ -28,6 +28,7 @@ const routes = [
       { path: 'comment', name: 'Comment', meta: { name: '评论信息' }, component: () => import('../views/manager/Comment.vue') },
       { path: 'activitySign', name: 'ActivitySign', meta: { name: '活动报名' }, component: () => import('../views/manager/ActivitySign.vue') },
       { path: 'chat', name: 'Chat', meta: { name: '在线聊天' }, component: () => import('../views/front/Chat.vue') },
+      { path: 'carousel', name: 'Carousel', meta: { name: '轮播图管理' }, component: () => import('../views/manager/Carousel.vue') },
     ]
   },
   {
@@ -36,6 +37,7 @@ const routes = [
     component: () => import('../views/Front.vue'),
     children: [
       { path: 'home', name: 'Home', meta: { name: '系统首页' }, component: () => import('../views/front/Home.vue') },
+      { path: 'blog', name: 'Blog', meta: { name: '游戏文章' }, component: () => import('../views/front/Blog.vue') },
       { path: 'person', name: 'Person', meta: { name: '个人信息' }, component: () => import('../views/front/Person.vue') },
       { path: 'blogDetail', name: 'BlogDetail', meta: { name: '游戏文章详情' }, component: () => import('../views/front/BlogDetail.vue') },
       { path: 'search', name: 'Search', meta: { name: '游戏文章搜索' }, component: () => import('../views/front/Search.vue') },

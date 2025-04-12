@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas ref="canvas" class="star-canvas"></canvas>
+    <StarBackground />
     <div class="main-content">
       <div style="display: flex; grid-gap: 10px">
 
@@ -92,10 +92,12 @@
 <script>
 import Footer from "@/components/Footer";
 import Comment from "@/components/Comment";
+import StarBackground from "@/components/StarBackground.vue";
 
 export default {
   name: "BlogDetail",
   components: {
+    StarBackground,
     Comment,
     Footer
   },
@@ -105,35 +107,13 @@ export default {
       blog: {},
       tagsArr: [],
       recommendList: [],
-      //动画相关变量
-      scale: 1,
-      width: 0,
-      height: 0,
-      stars: [],
-      pointerX: null,
-      pointerY: null,
-      velocity: { x: 0, y: 0, tx: 0, ty: 0, z: 0.0009 },
-      touchInput: false,
-      animationFrame: null,
     }
   },
   created() {
     this.load()
     this.$request.put('/blog/updateReadCount/' + this.blogId)
   },
-  mounted() {
-    this.initStarCanvas()
-  },
-  beforeDestroy() {
-    // 清理事件监听
-    window.removeEventListener('resize', this.handleResize);
-    const canvas = this.$refs.canvas;
-    canvas.removeEventListener('mousemove', this.onMouseMove);
-    canvas.removeEventListener('touchmove', this.onTouchMove);
-    canvas.removeEventListener('touchend', this.onMouseLeave);
-    document.removeEventListener('mouseleave', this.onMouseLeave);
-    cancelAnimationFrame(this.animationFrame);
-  },
+
   methods: {
     setLikes() {
       this.$request.post('/likes/set', {  fid: this.blogId, module: '游戏文章' }).then(res => {
@@ -164,176 +144,11 @@ export default {
         this.recommendList = res.data || []
       })
     },
-
-
-
-    // 星空动画方法
-    initStarCanvas() {
-      const canvas = this.$refs.canvas;
-      const context = canvas.getContext('2d');
-      this.generateStars();
-      this.handleResize();
-
-      // 添加事件监听
-      window.addEventListener('resize', this.handleResize);
-      canvas.addEventListener('mousemove', this.onMouseMove);
-      canvas.addEventListener('touchmove', this.onTouchMove);
-      canvas.addEventListener('touchend', this.onMouseLeave);
-      document.addEventListener('mouseleave', this.onMouseLeave);
-
-      this.step(context);
-    },
-    generateStars() {
-      const STAR_COUNT = (window.innerWidth + window.innerHeight) / 8;
-      this.stars = [];
-      for (let i = 0; i < STAR_COUNT; i++) {
-        this.stars.push({
-          x: 0,
-          y: 0,
-          z: 0.2 + Math.random() * 0.8
-        });
-      }
-      this.stars.forEach(star => this.placeStar(star));
-    },
-    placeStar(star) {
-      star.x = Math.random() * this.width;
-      star.y = Math.random() * this.height;
-    },
-    handleResize() {
-      this.scale = window.devicePixelRatio || 1;
-      this.width = window.innerWidth * this.scale;
-      this.height = window.innerHeight * this.scale;
-      const canvas = this.$refs.canvas;
-      canvas.width = this.width;
-      canvas.height = this.height;
-      this.stars.forEach(star => this.placeStar(star));
-    },
-    step(context) {
-      context.clearRect(0, 0, this.width, this.height);
-      this.updateStars();
-      this.renderStars(context);
-      this.animationFrame = requestAnimationFrame(() => this.step(context));
-    },
-    updateStars() {
-      this.velocity.tx *= 0.96;
-      this.velocity.ty *= 0.96;
-      this.velocity.x += (this.velocity.tx - this.velocity.x) * 0.8;
-      this.velocity.y += (this.velocity.ty - this.velocity.y) * 0.8;
-
-      this.stars.forEach(star => {
-        star.x += this.velocity.x * star.z;
-        star.y += this.velocity.y * star.z;
-        star.x += (star.x - this.width/2) * this.velocity.z * star.z;
-        star.y += (star.y - this.height/2) * this.velocity.z * star.z;
-        star.z += this.velocity.z;
-
-        if (star.x < -50 || star.x > this.width + 50 ||
-            star.y < -50 || star.y > this.height + 50) {
-          this.recycleStar(star);
-        }
-      });
-    },
-    recycleStar(star) {
-      let direction = 'z';
-      const vx = Math.abs(this.velocity.x);
-      const vy = Math.abs(this.velocity.y);
-
-      if (vx > 1 || vy > 1) {
-        let axis;
-        if (vx > vy) {
-          axis = Math.random() < vx / (vx + vy) ? 'h' : 'v';
-        } else {
-          axis = Math.random() < vy / (vx + vy) ? 'v' : 'h';
-        }
-
-        if (axis === 'h') {
-          direction = this.velocity.x > 0 ? 'l' : 'r';
-        } else {
-          direction = this.velocity.y > 0 ? 't' : 'b';
-        }
-      }
-
-      star.z = 0.2 + Math.random() * 0.8;
-
-      switch(direction) {
-        case 'l':
-          star.x = -50;
-          star.y = this.height * Math.random();
-          break;
-        case 'r':
-          star.x = this.width + 50;
-          star.y = this.height * Math.random();
-          break;
-        case 't':
-          star.x = this.width * Math.random();
-          star.y = -50;
-          break;
-        case 'b':
-          star.x = this.width * Math.random();
-          star.y = this.height + 50;
-          break;
-        default:
-          star.z = 0.1;
-          star.x = Math.random() * this.width;
-          star.y = Math.random() * this.height;
-      }
-    },
-    renderStars(context) {
-      context.clearRect(0, 0, this.width, this.height);
-      this.stars.forEach(star => {
-        context.beginPath();
-        context.lineCap = 'round';
-        context.lineWidth = 3 * star.z * this.scale;
-        context.globalAlpha = 0.5 + 0.5 * Math.random();
-        context.strokeStyle = '#fff';
-
-        const tailX = this.velocity.x * 2;
-        const tailY = this.velocity.y * 2;
-        context.moveTo(star.x, star.y);
-        context.lineTo(star.x + tailX, star.y + tailY);
-        context.stroke();
-      });
-    },
-    movePointer(x, y) {
-      if (this.pointerX !== null && this.pointerY !== null) {
-        const ox = x - this.pointerX;
-        const oy = y - this.pointerY;
-        this.velocity.tx += (ox / 8) * this.scale * (this.touchInput ? 1 : -1);
-        this.velocity.ty += (oy / 8) * this.scale * (this.touchInput ? 1 : -1);
-      }
-      this.pointerX = x;
-      this.pointerY = y;
-    },
-    onMouseMove(e) {
-      this.touchInput = false;
-      this.movePointer(e.clientX, e.clientY);
-    },
-    onTouchMove(e) {
-      this.touchInput = true;
-      this.movePointer(e.touches[0].clientX, e.touches[0].clientY);
-      e.preventDefault();
-    },
-    onMouseLeave() {
-      this.pointerX = null;
-      this.pointerY = null;
-    }
   }
 }
 </script>
 
 <style>
-/* 星空画布样式 */
-.star-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(-225deg, #231557 0%, #43107a 29%, #FF1361 100%);
-}
-
-/* blockquote 样式 */
 blockquote {
   display: block;
   border-left: 8px solid #d0e5f2;
@@ -344,7 +159,6 @@ blockquote {
   background-color: #f1f1f1;
 }
 
-/* code 样式 */
 code {
   display: inline-block;
   *display: inline;

@@ -73,7 +73,7 @@
               <span>系统管理</span>
             </template>
             <el-menu-item index="/notice">公告信息</el-menu-item>
-            <el-menu-item index="2">轮播图管理</el-menu-item>
+            <el-menu-item index="/carousel">轮播图管理</el-menu-item>
           </el-submenu>
         </el-menu>
 

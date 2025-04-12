@@ -11,6 +11,7 @@
         <div class="front-header-nav">
           <el-menu :default-active="$route.path" mode="horizontal" router>
 						<el-menu-item index="/front/home">首页</el-menu-item>
+						<el-menu-item index="/front/blog">游戏文章</el-menu-item>
             <el-menu-item index="/front/activity">游戏资讯</el-menu-item>
             <el-menu-item index="/front/chat">交流论坛</el-menu-item>
             <el-menu-item index="/front/person">个人中心</el-menu-item>

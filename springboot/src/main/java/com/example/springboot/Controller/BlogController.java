@@ -79,6 +79,7 @@ public class BlogController {
      */
     @GetMapping("/selectAll")
     public Result selectAll(Blog blog) {
+        blog.setStatus("通过");
         List<Blog> list = blogService.selectAll(blog);
         return Result.success(list);
     }
@@ -91,7 +92,7 @@ public class BlogController {
     public Result selectPage(Blog blog,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {
-        // blog.setStatus("通过");
+        blog.setStatus("通过");
         PageInfo<Blog> page = blogService.selectPage(blog, pageNum, pageSize);
         return Result.success(page);
     }
