@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <div class="front-notice"><i class="el-icon-bell" style="margin-right: 2px"></i>公告：{{ top }}</div>
+  <div style="height: 100%;">
+    <div class="front-notice" v-if="$route.path !== '/front/home'"><i class="el-icon-bell" style="margin-right: 2px"></i>公告：{{ top }}</div>
     <!--头部-->
-    <div class="front-header">
+    <div class="front-header" v-if="$route.path !== '/front/home'">
       <div class="front-header-left">
         <img src="@/assets/logo1.png" alt="">
         <div class="title">游戏分享网站</div>
@@ -10,8 +10,8 @@
       <div class="front-header-center">
         <div class="front-header-nav">
           <el-menu :default-active="$route.path" mode="horizontal" router>
-						<el-menu-item index="/front/home">首页</el-menu-item>
-						<el-menu-item index="/front/blog">游戏文章</el-menu-item>
+            <el-menu-item index="/front/home">首页</el-menu-item>
+            <el-menu-item index="/front/blog">游戏文章</el-menu-item>
             <el-menu-item index="/front/activity">游戏资讯</el-menu-item>
             <el-menu-item index="/front/chat">交流论坛</el-menu-item>
             <el-menu-item index="/front/person">个人中心</el-menu-item>
@@ -104,5 +104,5 @@ export default {
 </script>
 
 <style scoped>
-  @import "@/assets/css/front.css";
+@import "@/assets/css/front.css";
 </style>

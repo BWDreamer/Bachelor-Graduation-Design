@@ -59,7 +59,7 @@
     opacity: 0;
 }
 
-.item .conyent {
+.item .content {
     width: 300px;
     position: absolute;
     left: 100px;
@@ -70,7 +70,7 @@
     display: none;
 }
 
-.item:nth-child(2) .conyent {
+.item:nth-child(2) .content {
     display: block;
 }
 
@@ -78,23 +78,23 @@
     font-size: 40px;
     font-weight: bold;
     opacity: 0;
-    animation: showconyent 0.3s ease-in-out 1 forwards;
+    animation: showcontent 0.3s ease-in-out 1 forwards;
 }
 
 .item .des {
     margin: 20px;
     opacity: 0;
-    animation: showconyent 0.6s ease-in-out 1 forwards;
+    animation: showcontent 0.6s ease-in-out 1 forwards;
 }
 
 .item button {
     padding: 10px 20px;
     border: none;
     opacity: 0;
-    animation: showconyent 1s ease-in-out 1 forwards;
+    animation: showcontent 1s ease-in-out 1 forwards;
 }
 
-@keyframes showconyent {
+@keyframes showcontent {
     from {
         opacity: 0;
         transform: translateY(100px);

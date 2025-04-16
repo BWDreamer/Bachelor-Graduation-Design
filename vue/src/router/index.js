@@ -27,7 +27,7 @@ const routes = [
       { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice.vue') },
       { path: 'comment', name: 'Comment', meta: { name: '评论信息' }, component: () => import('../views/manager/Comment.vue') },
       { path: 'activitySign', name: 'ActivitySign', meta: { name: '活动报名' }, component: () => import('../views/manager/ActivitySign.vue') },
-      { path: 'chat', name: 'Chat', meta: { name: '在线聊天' }, component: () => import('../views/front/Chat.vue') },
+      { path: 'chat', name: 'Chat', meta: { name: '在线聊天' }, component: () => import('../views/manager/Chat.vue') },
       { path: 'carousel', name: 'Carousel', meta: { name: '轮播图管理' }, component: () => import('../views/manager/Carousel.vue') },
     ]
   },

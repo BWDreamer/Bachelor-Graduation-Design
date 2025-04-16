@@ -17,11 +17,11 @@
         left join user
         on blog.user_id = user.id
         <where>
-            <if test="blog.status != null">and blog.status = #{blog.status}</if>
+            <if test="blog.status != null and blog.status != ''">and blog.status = #{blog.status}</if>
             <if test="blog.title != null">and blog.title like concat('%', #{blog.title}, '%')</if>
             <if test="blog.categoryName != null">and category.name like concat('%', #{blog.categoryName}, '%')</if>
             <if test="blog.userName != null">and user.name like concat('%', #{blog.userName}, '%')</if>
-            <if test="blog.userId != null">and user.id = #{blog.userId}</if>
+            <if test="blog.userId != null">and blog.user_id = #{blog.userId}</if>
         </where>
         order by id desc
     </select>

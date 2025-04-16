@@ -1,6 +1,16 @@
 <template>
   <div>
     <StarBackground />
+
+    <!-- 轮播图 -->
+    <el-carousel class="carousel-container" v-if="carouselItems.length" height="250px">
+      <el-carousel-item v-for="(item, index) in carouselItems" :key="index">
+        <a :href="item.link" target="_blank">
+          <img :src="item.value" alt="轮播图" class="carousel-image">
+        </a>
+      </el-carousel-item>
+    </el-carousel>
+
     <div class="main-content">
       <div style="display: flex; align-items: flex-start; grid-gap: 10px; padding: 20px; max-width: 1200px; margin: 0 auto">
 
@@ -79,14 +89,25 @@ export default {
       showList: [],
       lastIndex: 0,
       topActivityList: [],
+      carouselItems: [],
     }
   },
   mounted() {
     this.load()
     this.refreshTop()
     this.loadTopActivity()
+    this.loadCarouselData()
   },
   methods: {
+    loadCarouselData() {
+      this.$request.get('/carousel/selectAll').then(res => {
+        this.carouselItems = (res.data || []).map(item => ({
+          ...item,
+          imageUrl: item.cover && `${this.$baseUrl}${item.cover}`,
+          link: item.link || '#'
+        }))
+      });
+    },
     loadTopActivity() {
       this.$request.get('/activity/selectTop').then(res => {
         this.topActivityList = res.data || []

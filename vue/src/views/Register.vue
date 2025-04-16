@@ -24,9 +24,8 @@
               <el-input prefix-icon="el-icon-lock" size="medium" show-password placeholder="请确认密码" v-model="user.confirmPass"></el-input>
             </el-form-item>
             <el-form-item prop="role">
-              <el-radio-group v-model="user.role">
-                <el-radio label="用户"></el-radio>
-                <el-radio label="游戏厂商"></el-radio>
+              <el-radio-group v-model="user.role" style="display: none">
+                <el-radio label="用户" checked></el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item>
@@ -61,7 +60,8 @@ export default {
       user:{
         username:'',
         password:'',
-        confirmPass:''
+        confirmPass:'',
+        role: '用户'  // 设置默认角色
       },
       rules: {
         username: [

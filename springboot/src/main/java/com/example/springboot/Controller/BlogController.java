@@ -92,7 +92,6 @@ public class BlogController {
     public Result selectPage(Blog blog,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {
-        blog.setStatus("通过");
         PageInfo<Blog> page = blogService.selectPage(blog, pageNum, pageSize);
         return Result.success(page);
     }

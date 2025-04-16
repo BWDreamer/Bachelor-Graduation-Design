@@ -100,7 +100,13 @@ public class FileController {
             FileUtil.writeBytes(file.getBytes(), ROOT_PATH + File.separator + newFileName);
 
             String url = "http://" + ip + ":" + port + "/file/download/" + newFileName;
-            return Dict.create().set("errno", 0).set("data", CollUtil.newArrayList(Dict.create().set("url", url)));
+//            return Dict.create().set("errno", 0).set("data", CollUtil.newArrayList(Dict.create().set("url", url)));
+            // Check if file is .video type
+            if (originalFilename != null && originalFilename.toLowerCase().endsWith(".mp4")) {
+                return Dict.create().set("errno", 0).set("data", Dict.create().set("url", url));
+            } else {
+                return Dict.create().set("errno", 0).set("data", CollUtil.newArrayList(Dict.create().set("url", url)));
+            }
         } catch (Exception e) {
             System.err.println(originalFilename + "--文件上传失败");
             return Dict.create().set("errno", 500);

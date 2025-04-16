@@ -4,13 +4,12 @@
       <el-input placeholder="请输入游戏名称查询" style="width: 200px; margin-right: 10px" v-model="title"></el-input>
       <el-input placeholder="请输入分类查询" style="width: 200px; margin-right: 10px" v-model="categoryName"></el-input>
       <el-input placeholder="请输入用户名称查询" style="width: 200px" v-model="userName"></el-input>
-      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
-      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
       <el-select v-model="status" placeholder="审核状态" clearable style="width: 120px; margin-left: 10px">
-        <el-option label="未审核" value="未审核"></el-option>
         <el-option label="通过" value="通过"></el-option>
         <el-option label="未通过" value="未通过"></el-option>
       </el-select>
+      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
+      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
     <div class="operation">
@@ -284,7 +283,7 @@ export default {
           title: this.title,
           categoryName: this.categoryName,
           userName: this.userName,
-          status: this.status
+          status: this.status,
         }
       }).then(res => {
         this.tableData = res.data?.list

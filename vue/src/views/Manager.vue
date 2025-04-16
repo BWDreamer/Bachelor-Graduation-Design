@@ -36,13 +36,12 @@
             </template>
             <el-menu-item index="/category">游戏类型</el-menu-item>
           </el-submenu>
-          <el-submenu index="article">
+          <el-submenu index="article" v-if="user.role==='管理员'">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>游戏文章管理</span>
             </template>
-            <el-menu-item index="/blog" v-if="user.role==='管理员'">游戏文章</el-menu-item>
-            <el-menu-item index="3" v-if="user.role==='用户'">我的文章</el-menu-item>
+            <el-menu-item index="/blog">游戏文章</el-menu-item>
           </el-submenu>
           <el-submenu index="news" v-if="user.role==='管理员'">
             <template slot="title">
@@ -51,13 +50,6 @@
             </template>
             <el-menu-item index="/activity">游戏活动</el-menu-item>
             <el-menu-item index="/activitySign">活动报名</el-menu-item>
-          </el-submenu>
-          <el-submenu index="star" v-if="user.role==='用户'">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>我的收藏管理</span>
-            </template>
-            <el-menu-item index="3">我的收藏</el-menu-item>
           </el-submenu>
           <el-submenu index="dialogue" v-if="user.role==='管理员'">
             <template slot="title">
