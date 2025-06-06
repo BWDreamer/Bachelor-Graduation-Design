@@ -6,16 +6,11 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-/**
- * 功能：
- * 作者：王柄皓
- * 日期：2025/1/24 16:16
- */
-@Data //该注解是lombok插件里的，会自动生成get方法和set方法
-@TableName("user")
+@Data
+@TableName("user")   //MyBatis-plus注解，指定表名
 public class User {
 
-    @TableId(type= IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private int id;
 
     private String username;

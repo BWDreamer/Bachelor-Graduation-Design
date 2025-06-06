@@ -1,7 +1,6 @@
 package com.example.springboot.Controller;
 
 import com.example.springboot.common.Result;
-import com.example.springboot.entity.Activity;
 import com.example.springboot.entity.ActivitySign;
 import com.example.springboot.service.ActivitySignService;
 import com.github.pagehelper.PageInfo;

@@ -123,6 +123,16 @@ export default {
         }
         this.editor.config.zIndex = 0
         this.editor.create()  // 创建
+
+        // 新增视频上传配置
+        this.editor.config.uploadVideoServer = this.$baseUrl + '/files/editor/upload' // 视频上传地址
+        this.editor.config.uploadVideoName = 'file' // 上传视频的文件名
+        this.editor.config.uploadVideoHeaders = {  // 视频上传headers
+          token: this.user.token
+        }
+        this.editor.config.uploadVideoParams = {  // 视频上传额外参数
+          type: 'video'
+        }
       })
     },
   }

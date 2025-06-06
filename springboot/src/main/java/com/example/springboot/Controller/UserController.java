@@ -9,7 +9,6 @@ import com.example.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @CrossOrigin
@@ -56,7 +55,6 @@ public class UserController {
         return Result.success();
     }
 
-
     /**
      * 批量删除用户信息
      */
@@ -84,7 +82,6 @@ public class UserController {
         return Result.success(user);
     }
 
-
     /**
      * 多条件模糊查询用户信息
      * pageNum 当前的页码
@@ -96,7 +93,7 @@ public class UserController {
                                @RequestParam String username,
                                @RequestParam String name) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<User>().orderByDesc("id");
-        queryWrapper.like(StrUtil.isNotBlank(username), "username", username);
+        queryWrapper.like(StrUtil.isNotBlank(username), "username", username);   //模糊匹配
         queryWrapper.like(StrUtil.isNotBlank(name), "name", name);
         // select * from user where username like '%#{username}%' and name like '%#{name}%'
         Page<User> page = userService.page(new Page<>(pageNum, pageSize), queryWrapper);

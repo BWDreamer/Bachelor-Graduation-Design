@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.example.springboot.mapper")
+@MapperScan("com.example.springboot.mapper")   //扫描所有的Mapper接口，不再需要每个Mapper加@Mapper注解了
 public class MybatisPlusConfig {
 
     /**

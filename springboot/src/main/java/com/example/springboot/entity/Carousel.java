@@ -3,9 +3,6 @@ package com.example.springboot.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
-/**
- * 轮播图实体类
- */
 @Data
 @TableName("carousel")
 public class Carousel {

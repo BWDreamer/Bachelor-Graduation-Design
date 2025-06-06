@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * 活动前端操作接口
- **/
 @RestController
 @RequestMapping("/activity")
 public class ActivityController {
@@ -138,7 +135,7 @@ public class ActivityController {
     }
 
     /**
-     * 热门游戏资讯榜单
+     * 热门游戏活动榜单
      */
     @GetMapping("/selectTop")
     public Result selectTop() {

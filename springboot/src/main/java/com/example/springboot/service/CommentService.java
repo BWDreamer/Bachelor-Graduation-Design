@@ -13,14 +13,11 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 业务处理
- **/
 @Service
 public class CommentService {
 
     @Resource
-    private CommentMapper commentMapper;
+    CommentMapper commentMapper;
 
     /**
      * 新增
@@ -32,9 +29,9 @@ public class CommentService {
         }
         comment.setTime(DateUtil.now());
         commentMapper.insert(comment);  //  先插入数据  拿到主键ID  再设置数据
-        if (comment.getRootId() == null){
+        if (comment.getRootId() == null) {
             comment.setRootId(comment.getId());
-            commentMapper.updateById(comment);  //  注意 更新一下 root_id
+            commentMapper.updateById(comment);  // 更新 root_id
         }
     }
 

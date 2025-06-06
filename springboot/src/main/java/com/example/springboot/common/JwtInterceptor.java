@@ -21,20 +21,21 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Resource
     private UserMapper userMapper;
 
+    //拿到token
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getHeader("token");  //header里面传过来的参数
         if (StrUtil.isBlank(token)) {
             token = request.getParameter("token");  //url参数 ?token=xxx
         }
-        // 如果不是映射到方法直接通过
         if (handler instanceof HandlerMethod) {
             AuthAccess annotation = ((HandlerMethod) handler).getMethodAnnotation(AuthAccess.class);
             if (annotation != null) {
                 return true;
             }
         }
-        // 执行认证
+
+        // 验证token存在与否
         if (StrUtil.isBlank(token)) {
             throw new ServiceException("401", "请登录");
         }
@@ -45,15 +46,15 @@ public class JwtInterceptor implements HandlerInterceptor {
         } catch (JWTDecodeException j) {
             throw new ServiceException("401", "请登录");
         }
-        // 根据token中的userid查询数据库
+        // 根据token中的user id查询数据库
         User user = userMapper.selectById(Integer.valueOf(userId));
         if (user == null) {
             throw new ServiceException("401", "请登录");
         }
-        // 用户密码加签验证 token
+        // 通过用户密码加密之后 生成一个验证器
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
         try {
-            jwtVerifier.verify(token); // 验证token
+            jwtVerifier.verify(token); // 通过验证器 验证token
         } catch (JWTVerificationException e) {
             throw new ServiceException("401", "请登录");
         }

@@ -7,20 +7,39 @@ import java.util.List;
 @Data
 public class Comment {
 
-    /** ID */
+    /**
+     * ID
+     */
     private Integer id;
-    /** 内容 */
+
+    /**
+     * 内容
+     */
     private String content;
-    /** 评论人 */
+
+    /**
+     * 评论人
+     */
     private Integer userId;
-    /** 父级ID */
+
+    /**
+     * 父级ID
+     */
     private Integer pid;
-    /** 根节点ID */
+
+    /**
+     * 根节点ID
+     */
     private Integer rootId;
-    /** 评论时间 */
+
+    /**
+     * 评论时间
+     */
     private String time;
 
-    /** 博客ID */
+    /**
+     * 文章/活动 ID
+     */
     private Integer fid;
 
     private String module;

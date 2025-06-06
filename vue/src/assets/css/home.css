@@ -39,6 +39,19 @@
     font-size: 16px;
     height: 60px;
     line-height: 60px;
+    padding: 0px 30px;
+}
+
+.navs .el-menu-item::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    width: 60%;
+    height: 4px;
+    background: slateblue;
+    transform: translateX(-50%);
+    padding: 0px 15px;
 }
 
 .navs .el-menu-item:hover {
@@ -48,9 +61,10 @@
 
 .navs .el-menu-item.is-active {
     color: #000 !important;
-    border-bottom: 3px solid #BFA457 !important;
+    /*border-bottom: 3px solid #BFA457 !important;*/
     text-decoration: none !important;
     position: relative;
+    background-color: white !important;
 }
 
 .navs .el-menu-item.is-active::after {
@@ -59,7 +73,7 @@
     left: 50%;
     bottom: 8px;
     width: 60%;
-    height: 2px;
+    height: 4px;
     background: #BFA457;
     transform: translateX(-50%);
 }

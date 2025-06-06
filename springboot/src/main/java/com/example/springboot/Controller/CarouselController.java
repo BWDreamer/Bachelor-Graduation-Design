@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/carousel")
 public class CarouselController {
 
     @Resource
-    private CarouselService carouselService;
+    CarouselService carouselService;
 
     /**
      * 查询所有

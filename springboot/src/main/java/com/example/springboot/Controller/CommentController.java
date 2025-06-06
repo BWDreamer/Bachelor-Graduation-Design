@@ -5,18 +5,16 @@ import com.example.springboot.entity.Comment;
 import com.example.springboot.service.CommentService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * 前端操作接口
- **/
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
 
     @Resource
-    private CommentService commentService;
+    CommentService commentService;
 
     /**
      * 新增
@@ -94,5 +92,5 @@ public class CommentController {
         Integer count = commentService.selectCount(fid, module);
         return Result.success(count);
     }
-    
+
 }

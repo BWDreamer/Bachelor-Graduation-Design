@@ -5,14 +5,10 @@ import com.example.springboot.entity.Blog;
 import com.example.springboot.service.BlogService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 
-/**
- * 博客信息前端操作接口
- **/
 @RestController
 @RequestMapping("/blog")
 public class BlogController {
@@ -75,7 +71,7 @@ public class BlogController {
     }
 
     /**
-     * 查询所有
+     * 查询通过审核的文章
      */
     @GetMapping("/selectAll")
     public Result selectAll(Blog blog) {
@@ -83,7 +79,6 @@ public class BlogController {
         List<Blog> list = blogService.selectAll(blog);
         return Result.success(list);
     }
-
 
     /**
      * 分页查询
@@ -141,7 +136,7 @@ public class BlogController {
     }
 
     /**
-     * 游戏文章榜单
+     * 热门游戏文章榜单
      */
     @GetMapping("/selectTop")
     public Result selectTop() {

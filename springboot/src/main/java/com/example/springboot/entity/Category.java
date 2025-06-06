@@ -1,15 +1,15 @@
 package com.example.springboot.entity;
 
-import java.io.Serializable;
-
-/**
- * 博客分类
- */
 public class Category {
 
-    /** ID */
+    /**
+     * ID
+     */
     private Integer id;
-    /** 分类名称 */
+
+    /**
+     * 分类名称
+     */
     private String name;
 
     public Integer getId() {

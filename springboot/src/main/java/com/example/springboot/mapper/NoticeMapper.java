@@ -4,9 +4,6 @@ import com.example.springboot.entity.Notice;
 
 import java.util.List;
 
-/**
- * 操作notice相关数据接口
-*/
 public interface NoticeMapper {
 
     /**

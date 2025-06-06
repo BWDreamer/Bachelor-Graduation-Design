@@ -23,9 +23,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * 游戏文章信息业务处理
- **/
 @Service
 public class BlogService {
 
@@ -47,7 +44,7 @@ public class BlogService {
     public void add(Blog blog) {
         blog.setDate(DateUtil.today());
         User currentUser = TokenUtils.getCurrentUser();
-        if ("用户".equals(currentUser.getRole())){
+        if ("用户".equals(currentUser.getRole())) {
             blog.setUserId(currentUser.getId());
         }
         blogMapper.insert(blog);
@@ -135,7 +132,7 @@ public class BlogService {
     }
 
     /**
-     * 游戏文章榜单
+     * 热门游戏文章榜单
      */
     public List<Blog> selectTop(Blog blog) {
         List<Blog> blogList = this.selectAll(blog);
@@ -153,11 +150,11 @@ public class BlogService {
         String tags = blog.getTags();
         Set<Blog> blogSet = new HashSet<>();
         if (ObjectUtil.isNotEmpty(tags)) {
-            // 创建带状态的查询条件
+            // 创建带条件的查询
             Blog query = new Blog();
-            query.setStatus("通过"); // 设置默认审核状态
+            query.setStatus("通过");
             List<Blog> blogList = this.selectAll(query);
-            JSONArray tagsArr = JSONUtil.parseArray(tags);
+            JSONArray tagsArr = JSONUtil.parseArray(tags);  //转换为包含两个String元素的JSONArray对象
             for (Object tag : tagsArr) {
                 Set<Blog> collect = blogList.stream()
                         .filter(b -> b.getTags().contains(tag.toString())
@@ -181,10 +178,10 @@ public class BlogService {
 
     public PageInfo<Blog> selectUser(Blog blog, Integer pageNum, Integer pageSize) {
         User currentUser = TokenUtils.getCurrentUser();
-        if ("用户".equals(currentUser.getRole())){
+        if ("用户".equals(currentUser.getRole())) {
             blog.setUserId(currentUser.getId());
         }
-        return this.selectPage(blog,pageNum,pageSize);
+        return this.selectPage(blog, pageNum, pageSize);
     }
 
     // 查询用户点赞的数据

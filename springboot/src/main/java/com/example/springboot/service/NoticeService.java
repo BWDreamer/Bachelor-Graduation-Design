@@ -12,14 +12,11 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * 公告信息表业务处理
- **/
 @Service
 public class NoticeService {
 
     @Resource
-    private NoticeMapper noticeMapper;
+    NoticeMapper noticeMapper;
 
     /**
      * 新增

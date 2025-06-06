@@ -15,7 +15,11 @@
             <el-menu-item index="/front/activity">游戏资讯</el-menu-item>
             <el-menu-item index="/front/chat">交流论坛</el-menu-item>
             <el-menu-item index="/front/person">个人中心</el-menu-item>
-            <el-menu-item index="/home">后台管理</el-menu-item>
+            <el-menu-item>
+              <a href="/home" target="_blank"
+                 style="text-decoration: none"
+                 @click.stop.prevent.native>后台管理</a>
+            </el-menu-item>
           </el-menu>
         </div>
       </div>

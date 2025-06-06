@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * 公告信息表前端操作接口
- **/
 @RestController
 @RequestMapping("/notice")
 public class NoticeController {
 
     @Resource
-    private NoticeService noticeService;
+    NoticeService noticeService;
 
     /**
      * 新增
@@ -68,7 +65,7 @@ public class NoticeController {
      * 查询所有
      */
     @GetMapping("/selectAll")
-    public Result selectAll(Notice notice ) {
+    public Result selectAll(Notice notice) {
         List<Notice> list = noticeService.selectAll(notice);
         return Result.success(list);
     }

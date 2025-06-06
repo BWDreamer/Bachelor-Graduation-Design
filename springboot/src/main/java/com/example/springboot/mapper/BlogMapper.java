@@ -7,9 +7,6 @@ import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
-/**
- * 操作blog相关数据接口
- */
 public interface BlogMapper{
 
     /**

@@ -25,8 +25,15 @@
       <!-- 主导航 -->
       <div class="navs">
         <el-menu :default-active="$route.path" mode="horizontal" router class="el-menu-demo">
-          <el-menu-item v-for="(item, index) in navItems" :key="index" :index="item.path">
+          <el-menu-item v-for="(item, index) in navItems.filter(i => i.name !== '后台管理')"
+                        :key="index"
+                        :index="item.path">
             {{ item.name }}
+          </el-menu-item>
+          <el-menu-item>
+            <a href="/home" target="_blank"
+               style="text-decoration: none"
+               @click.stop.prevent.native>后台管理</a>
           </el-menu-item>
         </el-menu>
       </div>
@@ -93,7 +100,6 @@ export default {
         { name: '游戏资讯', path: '/front/activity' },
         { name: '交流论坛', path: '/front/chat' },
         { name: '个人中心', path: '/front/person' },
-        { name: '后台管理', path: '/home' }
       ],
       user: JSON.parse(localStorage.getItem("web-user") || '{}')
     }
@@ -122,7 +128,7 @@ export default {
 .shell {
   flex: 1;
   overflow-x: hidden;
-  perspective: 3px;
+  perspective: 3px;  /* 创建3D透视空间 */
 }
 
 .shell div {
@@ -135,10 +141,10 @@ export default {
 }
 
 .image {
-  transform: translateZ(-1px) scale(1.6);
+  transform: translateZ(-1px) scale(1.6);  /* Z轴位移 + 缩放补偿， 将图片后移产生"远离屏幕"的效果，滚动时会比普通元素移动更慢 */
   background-size: cover;
   height: 100%;
-  z-index: -1;
+  z-index: -1;  /* 确保图片在内容下方 */
 }
 
 .text {
@@ -152,10 +158,11 @@ export default {
 
 .heading {
   z-index: -1;
-  transform: translateY(-30vh) translateZ(1px);
+  transform: translateY(-30vh) translateZ(1px);  /* 反向Z轴位移，在标题上使用正向位移，产生比普通元素更快的滚动速度 */
   color: #fff;
   font-size: 30px;
 }
 
-@import "@/assets/css/home.css";
 </style>
+
+<style src="@/assets/css/home.css" scoped></style>

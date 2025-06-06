@@ -103,8 +103,8 @@ export default {
     }
   },
   mounted() {
-    this.initStars();
-    this.startTextAnimation();
+    // this.initStars();
+    // this.startTextAnimation();
   },
   beforeDestroy() {
     clearTimeout(this.textTimer1);

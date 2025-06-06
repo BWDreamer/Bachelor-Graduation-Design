@@ -26,8 +26,15 @@
     <!-- 主导航 -->
     <div class="navs">
       <el-menu :default-active="$route.path" mode="horizontal" router class="el-menu-demo">
-        <el-menu-item v-for="(item, index) in navItems" :key="index" :index="item.path">
+        <el-menu-item v-for="(item, index) in navItems.filter(i => i.name !== '后台管理')"
+                      :key="index"
+                      :index="item.path">
           {{ item.name }}
+        </el-menu-item>
+        <el-menu-item>
+          <a href="/home" target="_blank"
+             style="text-decoration: none"
+             @click.stop.prevent.native>后台管理</a>
         </el-menu-item>
       </el-menu>
     </div>

@@ -14,14 +14,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 活动业务处理
- **/
 @Service
 public class ActivityService {
 
     @Resource
-    private ActivityMapper activityMapper;
+    ActivityMapper activityMapper;
 
     @Resource
     ActivitySignService activitySignService;
@@ -86,7 +83,7 @@ public class ActivityService {
      * 查询所有
      */
     public List<Activity> selectAll(Activity activity) {
-        return  activityMapper.selectAll(activity);
+        return activityMapper.selectAll(activity);
     }
 
     /**
@@ -105,7 +102,7 @@ public class ActivityService {
     }
 
     //设置活动额外信息
-    private void setAct(Activity act, User currentUser){
+    private void setAct(Activity act, User currentUser) {
         act.setIsEnd(DateUtil.parseDate(act.getEnd()).isBefore(new Date()));  // 活动的结束时间在当前时间之前  就表示活动结束了
         ActivitySign activitySign = activitySignService.selectByActivityIdAndUserId(act.getId(), currentUser.getId());
         act.setIsSign(activitySign != null);

@@ -9,12 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-/**
- * 功能：提供接口返回数据
- * 作者：王柄皓
- * 日期：2025/1/21 18:45
- */
-@RestController //RestController 注解表示该类是一个控制器，并且返回的是JSON格式的数据
+@RestController
 public class WebController {
 
     @Resource
@@ -22,13 +17,13 @@ public class WebController {
 
     @AuthAccess
     @GetMapping("/")
-    public Result hello(){
+    public Result hello() {
         return Result.success("success");
     }
 
     @PostMapping("/login")
-    public Result login(@RequestBody User user){
-        if(StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())){ //国产hutool插件
+    public Result login(@RequestBody User user) {
+        if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
             return Result.error("数据输入不合法");
         }
         user = userService.login(user);
@@ -37,11 +32,11 @@ public class WebController {
 
     @AuthAccess
     @PostMapping("/register")
-    public Result register(@RequestBody User user){
-        if(StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword()) || StrUtil.isBlank(user.getRole())){ //国产hutool插件
+    public Result register(@RequestBody User user) {
+        if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword()) || StrUtil.isBlank(user.getRole())) {
             return Result.error("数据输入不合法");
         }
-        if(user.getUsername().length()>10 || user.getPassword().length()>20){
+        if (user.getUsername().length() > 10 || user.getPassword().length() > 20) {
             return Result.error("数据输入不合法");
         }
         user = userService.register(user);
@@ -49,7 +44,7 @@ public class WebController {
     }
 
     /**
-     *  后台重置密码
+     * 后台重置密码
      */
     @AuthAccess
     @PutMapping("/password")

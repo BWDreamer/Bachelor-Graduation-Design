@@ -19,11 +19,6 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * 功能：
- * 作者：王柄皓
- * 日期：2025/4/14 11:07
- */
 @RestController
 @RequestMapping("/echarts")
 public class EchartsController {

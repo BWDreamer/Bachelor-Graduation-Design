@@ -30,7 +30,6 @@ public class TokenUtils {
 
     /**
      * 生成token
-     * @return
      */
     public static String createToken(String userId, String sign) {
         return JWT.create().withAudience(userId) // 将 user id 保存到 token 里面,作为载荷

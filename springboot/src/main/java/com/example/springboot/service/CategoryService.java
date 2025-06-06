@@ -4,13 +4,11 @@ import com.example.springboot.entity.Category;
 import com.example.springboot.mapper.CategoryMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * 博客分类业务处理
- **/
 @Service
 public class CategoryService {
 

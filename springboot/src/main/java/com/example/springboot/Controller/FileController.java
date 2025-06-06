@@ -16,11 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-/**
- * 功能：
- * 作者：王柄皓
- * 日期：2025/2/11 11:46
- */
 @RestController
 public class FileController {
 
@@ -100,8 +95,7 @@ public class FileController {
             FileUtil.writeBytes(file.getBytes(), ROOT_PATH + File.separator + newFileName);
 
             String url = "http://" + ip + ":" + port + "/file/download/" + newFileName;
-//            return Dict.create().set("errno", 0).set("data", CollUtil.newArrayList(Dict.create().set("url", url)));
-            // Check if file is .video type
+
             if (originalFilename != null && originalFilename.toLowerCase().endsWith(".mp4")) {
                 return Dict.create().set("errno", 0).set("data", Dict.create().set("url", url));
             } else {
@@ -112,6 +106,4 @@ public class FileController {
             return Dict.create().set("errno", 500);
         }
     }
-
-
 }

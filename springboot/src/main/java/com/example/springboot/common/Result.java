@@ -4,12 +4,11 @@ import lombok.*;
 
 /**
  * 接口统一返回包装类
- * 作者：王柄皓
  */
 @Getter
 @Setter
-@AllArgsConstructor//创建所有属性的构造函数
-@NoArgsConstructor//创建无参构造函数
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Result {
 
@@ -22,10 +21,12 @@ public class Result {
      * 404接口路径写错了或者参数写错了，405接口请求类型不匹配，400接口参数错误
      */
     private String code;
+
     /**
      * msg表示错误的详细信息
      */
     private String msg;
+
     /**
      * data表示返回的数据，数据从什么地方返回出去
      * 返回user，Object类型就是user

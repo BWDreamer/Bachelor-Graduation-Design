@@ -6,9 +6,6 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-/**
- * 操作comment相关数据接口
- */
 public interface CommentMapper {
 
     /**
