@@ -1,0 +1,22 @@
+server:
+  port: 9999
+
+ip: localhost
+
+spring:
+  datasource:
+    #指定 MySQL 数据库的驱动类名
+    driverClassName: com.mysql.cj.jdbc.Driver
+    #配置数据库连接 URL，包括数据库地址、端口、数据库名以及一些额外的参数，字符编码、时区等
+    url: jdbc:mysql://${ip}:3306/cqupt2025-graduation?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+    #数据库用户名
+    username: root
+    #数据库密码
+    password: 123456
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+      resolve-lazily: false
+      file-size-threshold: 10MB

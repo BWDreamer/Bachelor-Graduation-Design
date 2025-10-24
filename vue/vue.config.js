@@ -5,12 +5,12 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer:{
-    port: 9999
+    port: 9998
   },
   chainWebpack: config =>{
     config.plugin('html')
         .tap(args => {
-          args[0].title = "在线聊天室";
+          args[0].title = "游戏分享网站";
           return args;
         })
   }
